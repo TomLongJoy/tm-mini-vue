@@ -1,9 +1,6 @@
 import { effect } from "../effect";
 import { reactive } from "../reactive";
-
-
 describe("happy path ", () => {
-
     it("happy path ", () => {
         const user = reactive({
             age: 10
