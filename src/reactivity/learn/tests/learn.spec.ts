@@ -1,4 +1,4 @@
-import { Car } from "../test-reactive";
+import { Car } from "../test-class";
 
 describe("reactive", () => {
 
@@ -10,9 +10,7 @@ describe("reactive", () => {
     })
 
     it("set-map", () => {
-
         let mySet = new Set([1,2,3]);
-
         mySet.add(2);
         debugger
     })

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bind</title>
+</head>
+
+<body>
+    <div>aaaa</div>
+    <script>
+        function funThis() {
+            console.log("0x000000-----没有传参数的this：")
+            console.log(this);
+        }
+        function fun() {
+            console.log("0x000001-----cat作为call的参数");
+            console.log(this);
+            console.log(this.name);// 
+        }
+        const cat = {
+            name: "喵喵",
+        }
+        const dog = {
+            name: "旺财",
+            sayName() {
+                console.log("我是" + this.name);
+            },
+            eat(food1, food2) {
+                console.log("我喜欢吃", food1 + food2)
+            }
+        }
+        funThis.call();
+        //call 可以调用函数, call可以改变this的指向
+        fun.call(cat);
+        dog.sayName.call(cat)
+        dog.eat("骨头")
+        dog.eat.call(cat, "call鱼", "call肉");
+        dog.eat.apply(cat, ["call鱼", "call肉"])
+        const fn = dog.eat.bind(cat, "bind 鱼", "bind 肉");
+        fn();
+    </script>
+</body>
+
+</html>
