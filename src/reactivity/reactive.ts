@@ -1,6 +1,5 @@
-import { mutableHandlers, readonlyHandlers } from './baseHandlers';
-import { track, trigger } from "./effect";
-
+import {mutableHandlers, readonlyHandlers} from './baseHandlers';
+// import {track, trigger} from "./effect";
 
 
 export function reactive(raw: any) {
@@ -8,9 +7,10 @@ export function reactive(raw: any) {
 }
 
 export function readonly(raw: any) {
-    return createActiveObject(raw,readonlyHandlers)
+    return createActiveObject(raw, readonlyHandlers)
 }
 
-function createActiveObject(raw: any,baseHandlers) {
+function createActiveObject(raw: any, baseHandlers) {
+
     return new Proxy(raw, baseHandlers);
 }

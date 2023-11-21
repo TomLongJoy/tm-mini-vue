@@ -3,11 +3,12 @@ exports.__esModule = true;
 var effect_1 = require("../effect");
 var reactive_1 = require("../reactive");
 describe("happy path ", function () {
-    it.skip("happy path ", function () {
+    it("happy path ", function () {
         var user = reactive_1.reactive({
             age: 10
         });
         var nextAge;
+        debugger;
         effect_1.effect(function () {
             nextAge = user.age + 1;
         });
