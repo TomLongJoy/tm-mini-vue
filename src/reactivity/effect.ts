@@ -5,6 +5,7 @@ class ReactiveEffect {
     deps = [];
     active = true;
     onStop?: () => void;
+    // scheduler (调度器)
     public scheduler: Function | undefined;
     constructor(fn: any, public _scheduler?: Function) {
         this._fn = fn;
@@ -30,6 +31,8 @@ function cleanupEffect(effect: any) {
         dep.delete(effect)
     });
 }
+
+//todo -- 收集依赖 06视频 14:30
 const targetMap = new Map();
 export function track(target: any, key: any) {
     // target -> key -> dep
@@ -47,10 +50,10 @@ export function track(target: any, key: any) {
     dep.add(activeEffect)
     activeEffect.deps.push(dep);
 
-    debugger
 
 }
 
+// todo -- 触发依赖
 export function trigger(target: any, key: string | symbol) {
     let depsMap = targetMap.get(target);
     let dep = depsMap.get(key);
@@ -73,6 +76,8 @@ export function effect(fn: any, options: any = {}) {
     extend(_effect, options)
 
     _effect.run();
+
+    // bind(this: Function, thisArg: any, ...argArray: any[]): any;
     const runner: any = _effect.run.bind(_effect);
     /*
         runner是个函数，怎么能 .effect

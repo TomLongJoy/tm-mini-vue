@@ -4,3 +4,8 @@ node_modules/
 .idea/tm-mini-vue.iml
 .idea/vcs.xml
 src/.DS_Store
+.idea/compiler.xml
+.idea/jsLibraryMappings.xml
+*.xml
+mini-vue/package.json
+mini-vue/mini-vue.iml

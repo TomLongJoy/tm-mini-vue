@@ -1,12 +1,12 @@
 import { effect, stop } from "../effect";
 import { reactive } from "../reactive";
+
 describe("happy path ", () => {
-    it("happy path ", () => {
+    test("happy path one", () => {
         const user = reactive({
             age: 10
         })
         let nextAge;
-        debugger
         effect(() => {
             nextAge = user.age + 1;
         })

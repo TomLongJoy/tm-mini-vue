@@ -1,5 +1,8 @@
 # tm-mini-vue
- 练习minivue
+ 练习minivue 
+```ts
+    1. 没有run 按钮 https://www.jetbrains.com/help/webstorm/run-debug-configuration-jest.html#ws_js_test_jest_specific_config_settings    
+```
 
 # 1创建步骤 vue3 pinia ts  node v16.20.0  
 
