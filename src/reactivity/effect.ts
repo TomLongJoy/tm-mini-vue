@@ -1,6 +1,7 @@
 import { extend } from "../shared";
 
-let shouldTrack;
+let activeEffect: any;
+let shouldTrack: any;
 
 class ReactiveEffect {
     private _fn: any;
@@ -14,8 +15,19 @@ class ReactiveEffect {
         this.scheduler = _scheduler;
     }
     run() {
+
+        //1.会收集依赖
+        // shouldTrack 来做区分
+
+        if (!this.active) {
+            return this._fn();
+        }
+        shouldTrack = true;
         activeEffect = this;
-        return this._fn();
+        const result = this._fn();
+        // reset 
+        shouldTrack = false;
+        return result;
     }
     stop() {
         if (this.active) {
@@ -37,6 +49,8 @@ function cleanupEffect(effect: any) {
 //todo -- 收集依赖 06视频 14:30
 const targetMap = new Map();
 export function track(target: any, key: any) {
+
+    if (!isTracking()) return;
     // target -> key -> dep
     let depsMap = targetMap.get(target);
     if (!depsMap) {
@@ -48,21 +62,22 @@ export function track(target: any, key: any) {
         dep = new Set();
         depsMap.set(key, dep)
     }
-
-
     trackEffects(dep);
 }
 
 export function trackEffects(dep) {
-    if (!activeEffect) return;
+    //看看 dep 之前有没有添加过，添加过的话 那么就不添加了
+    if (dep.has(activeEffect)) return;
     dep.add(activeEffect)
     activeEffect.deps.push(dep);
 
 }
 
-export function isTracking() { // zlj 16集，10：12
+export function isTracking() { // 12集，10：45创建。  zlj 16集，10：12 有使用
 
     return shouldTrack && activeEffect !== undefined;
+    // if (!activeEffect) return;
+    // if (!shouldTrack) return;
 }
 
 // todo -- 触发依赖
@@ -82,7 +97,7 @@ export function triggerEffects(dep) {
     }
 }
 
-let activeEffect: any;
+
 export function effect(fn: any, options: any = {}) {
     //fn
     const _effect = new ReactiveEffect(fn, options.scheduler);

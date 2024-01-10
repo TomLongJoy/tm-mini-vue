@@ -2,11 +2,9 @@ import { isReactive, reactive } from "../reactive";
 describe("reactive", () => {
       it("happy path ", () => {
             const original = { foo: 1 };
-
             /*
             Reflect 
             Proxy
-
             */
             const observed = reactive(original);
             // const observedTwo = original;

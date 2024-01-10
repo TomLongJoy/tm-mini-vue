@@ -2,6 +2,7 @@
 exports.__esModule = true;
 exports.stop = exports.effect = exports.triggerEffects = exports.trigger = exports.isTracking = exports.trackEffects = exports.track = void 0;
 var shared_1 = require("../shared");
+var activeEffect;
 var shouldTrack;
 var ReactiveEffect = /** @class */ (function () {
     function ReactiveEffect(fn, _scheduler) {
@@ -12,8 +13,17 @@ var ReactiveEffect = /** @class */ (function () {
         this.scheduler = _scheduler;
     }
     ReactiveEffect.prototype.run = function () {
+        //1.会收集依赖
+        // shouldTrack 来做区分
+        if (!this.active) {
+            return this._fn();
+        }
+        shouldTrack = true;
         activeEffect = this;
-        return this._fn();
+        var result = this._fn();
+        // reset 
+        shouldTrack = false;
+        return result;
     };
     ReactiveEffect.prototype.stop = function () {
         if (this.active) {
@@ -34,6 +44,8 @@ function cleanupEffect(effect) {
 //todo -- 收集依赖 06视频 14:30
 var targetMap = new Map();
 function track(target, key) {
+    if (!isTracking())
+        return;
     // target -> key -> dep
     var depsMap = targetMap.get(target);
     if (!depsMap) {
@@ -49,7 +61,8 @@ function track(target, key) {
 }
 exports.track = track;
 function trackEffects(dep) {
-    if (!activeEffect)
+    //看看 dep 之前有没有添加过，添加过的话 那么就不添加了
+    if (dep.has(activeEffect))
         return;
     dep.add(activeEffect);
     activeEffect.deps.push(dep);
@@ -57,6 +70,8 @@ function trackEffects(dep) {
 exports.trackEffects = trackEffects;
 function isTracking() {
     return shouldTrack && activeEffect !== undefined;
+    // if (!activeEffect) return;
+    // if (!shouldTrack) return;
 }
 exports.isTracking = isTracking;
 // todo -- 触发依赖
@@ -78,7 +93,6 @@ function triggerEffects(dep) {
     }
 }
 exports.triggerEffects = triggerEffects;
-var activeEffect;
 function effect(fn, options) {
     if (options === void 0) { options = {}; }
     //fn

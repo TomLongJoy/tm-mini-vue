@@ -23,7 +23,7 @@ describe("ref", () => {
         expect(dummy).toBe(2);
         // same value should not trigger
         a.value = 2;
-        expect(calls).toBe(3);
+        expect(calls).toBe(2);
         expect(dummy).toBe(2);
     })
 
