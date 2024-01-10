@@ -1,5 +1,7 @@
 import { extend } from "../shared";
 
+let shouldTrack;
+
 class ReactiveEffect {
     private _fn: any;
     deps = [];
@@ -46,17 +48,31 @@ export function track(target: any, key: any) {
         dep = new Set();
         depsMap.set(key, dep)
     }
-    if(!activeEffect) return;
+
+
+    trackEffects(dep);
+}
+
+export function trackEffects(dep) {
+    if (!activeEffect) return;
     dep.add(activeEffect)
     activeEffect.deps.push(dep);
 
+}
 
+export function isTracking() { // zlj 16集，10：12
+
+    return shouldTrack && activeEffect !== undefined;
 }
 
 // todo -- 触发依赖
 export function trigger(target: any, key: string | symbol) {
     let depsMap = targetMap.get(target);
     let dep = depsMap.get(key);
+    triggerEffects(dep)
+}
+
+export function triggerEffects(dep) {
     for (const effect of dep) {
         if (effect.scheduler) {
             effect.scheduler();
@@ -65,6 +81,7 @@ export function trigger(target: any, key: string | symbol) {
         }
     }
 }
+
 let activeEffect: any;
 export function effect(fn: any, options: any = {}) {
     //fn

@@ -9,3 +9,4 @@ src/.DS_Store
 *.xml
 mini-vue/package.json
 mini-vue/mini-vue.iml
+yarn.lock

@@ -1,6 +1,6 @@
 import { Car } from "../test-class";
 
-describe("reactive", () => {
+describe.skip("reactive", () => {
 
     it("tes-js-class", () => {
         const benz = new Car("舒马赫", "benz");
@@ -10,7 +10,7 @@ describe("reactive", () => {
     })
 
     it("set-map", () => {
-        let mySet = new Set([1,2,3]);
+        let mySet = new Set([1, 2, 3]);
         mySet.add(2);
         debugger
     })

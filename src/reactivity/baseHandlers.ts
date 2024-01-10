@@ -1,11 +1,13 @@
-import {track, trigger} from "./effect";
-import {ReactiveFlags} from "./reactive";
+import { extend, isObject } from "../shared";
+import { track, trigger } from "./effect";
+import { ReactiveFlags, reactive, readonly, shallowReadonly } from "./reactive";
 
 const get = createGetter();
 const set = createSetter();
 const readonlyGet = createGetter(true);
+const shallowReadonlyGet = createGetter(true, true);
 
-function createGetter(isReadOnly = false) {
+function createGetter(isReadOnly = false, shallow = false) {
     return function get(target: object, key: any) {
         /*
         Reflect.get方法查找并返回target对象的name属性，如果没有该属性返回undefined
@@ -17,11 +19,24 @@ function createGetter(isReadOnly = false) {
         }
 
         const res = Reflect.get(target, key);
+
+        if (shallow) {
+            return res;
+        }
+
+        //看看 res 是不是 object 
+        if (isObject(res)) {
+
+            return isReadOnly ? readonly(res) : reactive(res)
+        }
+
+
         if (!isReadOnly) {
             /*
                 跟踪
              */
-            track(target, key);////info 收集依赖
+            //info 收集依赖
+            track(target, key);
         }
         return res;
     }
@@ -53,3 +68,7 @@ export const readonlyHandlers = {
         return true;
     }
 }
+
+export const shallowReadonlyHandlers = extend({}, readonlyHandlers, {
+    get: shallowReadonlyGet
+})  
