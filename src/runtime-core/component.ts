@@ -1,12 +1,12 @@
+import { PublicInstancePoxyHandlers } from "./componentPublicInstance";
 
 export function createComponentInstance(vnode) {
 
     const componet = {
         vnode,
         type: vnode.type,
+        setupState: {}
     }
-
-
     return componet;
 }
 
@@ -26,13 +26,15 @@ function setupStatefulComponent(instance: any) {
 
     const component = instance.type;
 
+    // ctx <context>
+    instance.proxy = new Proxy({ _: instance }, PublicInstancePoxyHandlers);
+
     const { setup } = component
     if (setup) {
 
         // function Object 
         const setupResult = setup();
         handleSetupResult(instance, setupResult);
-
     }
 }
 

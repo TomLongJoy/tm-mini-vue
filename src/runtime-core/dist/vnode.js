@@ -5,7 +5,8 @@ function createVNode(type, props, children) {
     var vnode = {
         type: type,
         props: props,
-        children: children
+        children: children,
+        el: null
     };
     return vnode;
 }

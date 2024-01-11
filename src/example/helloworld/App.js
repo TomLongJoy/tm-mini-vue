@@ -1,10 +1,12 @@
 
 import { h } from "../../../lib/guide-mini-vue.esm.js";
 
-export const App = {
+window.self = null;
 
+export const App = {
     // 必须要写ruender
     render() {
+        window.self = this;
         // 
         return h(
             "div",
@@ -12,12 +14,14 @@ export const App = {
                 id: "root",
                 class: ["red", "hard"]
             },
-            // "hi," + this.msg
+            // setupState
+            // this.$el   -> get root element 
+            "hi," + this.msg
             //string
             // 'hi,mini-vue'
 
             //Array 
-            [h('p', { class: "red" }, 'hi'), h("p", { class: "blue" }, 'mini-vue')]
+            // [h('p', { class: "red" }, 'hi'), h("p", { class: "blue" }, 'mini-vue')]
         );
     },
 
@@ -27,7 +31,7 @@ export const App = {
 
         return {
 
-            msg: "mini-vue",
+            msg: "mini-vue,hahah",
         }
     }
 }
