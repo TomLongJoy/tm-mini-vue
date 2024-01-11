@@ -1,11 +1,9 @@
 
+import { h } from "../../../lib/guide-mini-vue.esm.js";
+
 export const App = {
 
-    // .vuew 
-    // template
-
-    // render
-
+    // 必须要写ruender
     render() {
         // 
         return h("div", "hi," + this.msg);
