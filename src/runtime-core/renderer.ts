@@ -57,6 +57,17 @@ function mountElement(vnode: any, container: any) {
     const { props } = vnode;
     for (const key in props) {
         const val = props[key];
+        console.log(key)
+        // 具体的 click -> 通用
+
+        // on + Event name
+        //onMousedown 
+
+        const isOn = (key: string) => /^on[A-Z]/.test(key);
+        if (isOn(key)) {
+            const event = key.slice(2).toLowerCase();
+            el.addEventListener(event, val);
+        }
         // todo setAttribute 需要了解下
         el.setAttribute(key, val);
 
