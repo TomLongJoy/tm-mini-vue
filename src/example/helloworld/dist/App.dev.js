@@ -11,7 +11,18 @@ var App = {
   // 必须要写ruender
   render: function render() {
     // 
-    return (0, _guideMiniVueEsm.h)("div", "hi," + this.msg);
+    return (0, _guideMiniVueEsm.h)("div", {
+      id: "root",
+      "class": ["red", "hard"]
+    }, // "hi," + this.msg
+    //string
+    // 'hi,mini-vue'
+    //Array 
+    [(0, _guideMiniVueEsm.h)('p', {
+      "class": "red"
+    }, 'hi'), (0, _guideMiniVueEsm.h)("p", {
+      "class": "blue"
+    }, 'mini-vue')]);
   },
   setup: function setup() {
     // composition api 
