@@ -2,14 +2,18 @@
 exports.__esModule = true;
 exports.setupComponent = exports.createComponentInstance = void 0;
 var reactive_1 = require("../reactivity/reactive");
+var componentEmit_1 = require("./componentEmit");
 var componentProps_1 = require("./componentProps");
 var componentPublicInstance_1 = require("./componentPublicInstance");
 function createComponentInstance(vnode) {
     var componet = {
         vnode: vnode,
         type: vnode.type,
-        setupState: {}
+        setupState: {},
+        props: {},
+        emit: function () { }
     };
+    componet.emit = componentEmit_1.emit.bind(null, componet);
     return componet;
 }
 exports.createComponentInstance = createComponentInstance;
@@ -28,7 +32,7 @@ function setupStatefulComponent(instance) {
     var setup = component.setup;
     if (setup) {
         // function Object 
-        var setupResult = setup(reactive_1.shallowReadonly(instance.props));
+        var setupResult = setup(reactive_1.shallowReadonly(instance.props), { emit: instance.emit });
         handleSetupResult(instance, setupResult);
     }
 }

@@ -57,7 +57,7 @@ function mountElement(vnode: any, container: any) {
     const { props } = vnode;
     for (const key in props) {
         const val = props[key];
-        console.log(key)
+        // console.log(key)
         // 具体的 click -> 通用
 
         // on + Event name
