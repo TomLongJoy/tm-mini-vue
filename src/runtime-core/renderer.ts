@@ -62,15 +62,15 @@ function mountElement(vnode: any, container: any) {
 
         // on + Event name
         //onMousedown 
-
+        // debugger
         const isOn = (key: string) => /^on[A-Z]/.test(key);
         if (isOn(key)) {
             const event = key.slice(2).toLowerCase();
             el.addEventListener(event, val);
+        } else {
+            // todo setAttribute 需要了解下
+            el.setAttribute(key, val);
         }
-        // todo setAttribute 需要了解下
-        el.setAttribute(key, val);
-
     }
     container.append(el)
 }

@@ -14,11 +14,12 @@ export const App = {
                 id: "root",
                 class: ["red", "hard"],
                 onClick() {
-                    console.log("click");
+
+                    console.log(9 + 9);
                 },
-                onMousedown() {
-                    console.log("mouseDown")
-                }
+                // onMousedown() {
+                //     console.log("mouseDown")
+                // }
             },
             // setupState
             // this.$el   -> get root element 
