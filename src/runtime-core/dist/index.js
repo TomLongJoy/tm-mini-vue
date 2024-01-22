@@ -15,3 +15,5 @@ var renderSlots_1 = require("./helpers/renderSlots");
 __createBinding(exports, renderSlots_1, "renderSlots");
 var vnode_1 = require("./vnode");
 __createBinding(exports, vnode_1, "createTextVNode");
+var component_1 = require("./component");
+__createBinding(exports, component_1, "getCurrentInstance");
