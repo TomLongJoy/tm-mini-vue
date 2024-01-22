@@ -17,3 +17,6 @@ var vnode_1 = require("./vnode");
 __createBinding(exports, vnode_1, "createTextVNode");
 var component_1 = require("./component");
 __createBinding(exports, component_1, "getCurrentInstance");
+var apiInject_1 = require("./apiInject");
+__createBinding(exports, apiInject_1, "provide");
+__createBinding(exports, apiInject_1, "inject");
