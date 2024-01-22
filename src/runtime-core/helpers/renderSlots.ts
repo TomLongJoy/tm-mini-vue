@@ -1,4 +1,4 @@
-import { createVNode } from "../vnode";
+import { Fragment, createVNode } from "../vnode";
 
 
 export function renderSlots(slots, name, props) {
@@ -7,7 +7,9 @@ export function renderSlots(slots, name, props) {
     if (slot) {
         // function
         if (typeof slot === "function") {
-            return createVNode("div", {}, slot(props))
+            // children 是不可以有array 
+            // 只需要把 chirldern 
+            return createVNode(Fragment, {}, slot(props))
 
 
         }

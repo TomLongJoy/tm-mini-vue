@@ -16,9 +16,10 @@ var App = {
     // object key  
 
     var foo = (0, _guideMiniVueEsm.h)(_Foo.Foo, {}, {
+      // element -> text 
       header: function header(_ref) {
         var age = _ref.age;
-        return (0, _guideMiniVueEsm.h)("p", {}, "header" + age);
+        return [(0, _guideMiniVueEsm.h)("p", {}, "header" + age), (0, _guideMiniVueEsm.createTextVNode)("你好呀")];
       },
       footer: function footer() {
         return (0, _guideMiniVueEsm.h)("p", {}, "footer  ");

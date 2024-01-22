@@ -1,6 +1,8 @@
 "use strict";
 exports.__esModule = true;
-exports.createVNode = void 0;
+exports.createTextVNode = exports.createVNode = exports.Text = exports.Fragment = void 0;
+exports.Fragment = Symbol("Fragment");
+exports.Text = Symbol("Text");
 function createVNode(type, props, children) {
     var vnode = {
         type: type,
@@ -26,6 +28,10 @@ function createVNode(type, props, children) {
     return vnode;
 }
 exports.createVNode = createVNode;
+function createTextVNode(text) {
+    return createVNode(exports.Text, {}, text);
+}
+exports.createTextVNode = createTextVNode;
 function getShapeFlag(type) {
     return typeof type === 'string'
         ? 1 /* ELEMENT */

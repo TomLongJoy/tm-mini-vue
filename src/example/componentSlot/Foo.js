@@ -8,7 +8,7 @@ export const Foo = {
         const foo = h("p", {}, "foo");
 
         //Foo .vnode. children 
-        debugger
+        // debugger
         console.log(this.$slots);
 
         //children -> vnode 

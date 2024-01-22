@@ -1,6 +1,7 @@
 import { ShapeFlags } from "../shared/ShapeFlags";
 import { isObject } from "../shared/index";
 import { createComponentInstance, setupComponent } from "./component";
+import { Fragment, Text } from "./vnode";
 
 export function render(vnode, container) {
     // patch 
@@ -23,13 +24,26 @@ function patch(vnode, container) {
     // vnode -> flag
     // element 
 
-    const { shapeFlag } = vnode;
-    if (shapeFlag & ShapeFlags.ELEMENT) {
-        processElemtn(vnode, container);
-        // STATEFUL_COMPONENT 
-    } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-        processComponent(vnode, container);
+    const { type, shapeFlag } = vnode;
+
+    // Fragment -> children
+    switch (type) {
+        case Fragment:
+            processFragment(vnode, container);
+            break;
+        case Text:
+            processText(vnode, container);
+            break;
+        default:
+            if (shapeFlag & ShapeFlags.ELEMENT) {
+                processElemtn(vnode, container);
+                // STATEFUL_COMPONENT 
+            } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
+                processComponent(vnode, container);
+            }
+            break;
     }
+
 }
 
 function processElemtn(vnode: any, container: any) {
@@ -111,4 +125,18 @@ function setupRenderEffect(instance: any, initialVNode, container: any) {
     initialVNode.el = subTree.el
 }
 
+
+function processFragment(vnode: any, container: any) {
+    // implement 
+    mountChildren(vnode, container);
+}
+
+function processText(vnode: any, container: any) {
+
+    const { children } = vnode;
+    const textNode = (vnode.el = document.createTextNode(children));
+    container.append(textNode)
+
+
+}
 

@@ -11,8 +11,8 @@ var Foo = {
   setup: function setup() {},
   render: function render() {
     var foo = (0, _guideMiniVueEsm.h)("p", {}, "foo"); //Foo .vnode. children 
+    // debugger
 
-    debugger;
     console.log(this.$slots); //children -> vnode 
     //vnode 
     // 
