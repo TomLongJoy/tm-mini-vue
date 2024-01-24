@@ -6,3 +6,8 @@
     3.折叠当前方法 Ctrl+Shift+[ 
     4.展开当前方法 Ctrl+Shift+]
 ```
+
+### watch
+```js 
+    yarn build --watch
+```
