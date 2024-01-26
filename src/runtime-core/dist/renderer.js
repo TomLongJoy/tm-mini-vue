@@ -2,6 +2,7 @@
 exports.__esModule = true;
 exports.createRender = void 0;
 var effect_1 = require("../reactivity/effect");
+var shared_1 = require("../shared");
 var component_1 = require("./component");
 var createApp_1 = require("./createApp");
 var vnode_1 = require("./vnode");
@@ -48,6 +49,7 @@ function createRender(options) {
             mountElement(n2, container, parentComponent);
         }
         else {
+            // debugger
             patchElement(n1, n2, container);
         }
     }
@@ -55,6 +57,28 @@ function createRender(options) {
         console.log("patchElement");
         console.log("n1", n1);
         console.log("n2", n2);
+        var oldProps = n1.props || shared_1.EMPTY_OBJ;
+        var newProps = n2.props || shared_1.EMPTY_OBJ;
+        var el = (n2.el = n1.el);
+        patchProps(el, oldProps, newProps);
+    }
+    function patchProps(el, oldProps, newProps) {
+        if (oldProps !== newProps) {
+            for (var key in newProps) {
+                var prevProp = oldProps[key];
+                var nextProp = newProps[key];
+                if (prevProp !== nextProp) {
+                    hostPatchProp(el, key, prevProp, nextProp);
+                }
+            }
+            if (oldProps !== shared_1.EMPTY_OBJ) {
+                for (var key in oldProps) {
+                    if (!(key in newProps)) {
+                        hostPatchProp(el, key, oldProps[key], null);
+                    }
+                }
+            }
+        }
     }
     function mountElement(vnode, container, parentComponent) {
         // vnode -> element -> div
@@ -72,7 +96,7 @@ function createRender(options) {
         var props = vnode.props;
         for (var key in props) {
             var val = props[key];
-            hostPatchProp(el, key, val);
+            hostPatchProp(el, key, null, val);
         }
         // container.append(el)
         hostInsert(el, container);

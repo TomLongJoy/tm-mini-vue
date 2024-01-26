@@ -6,7 +6,7 @@ function createElement(type: any) {
     return document.createElement(type)
 }
 
-function patchProp(el, key, val) {
+function patchProp(el, key, prevVal, nextVal) {
     // console.log(key)
     // 具体的 click -> 通用
     // on + Event name
@@ -15,10 +15,17 @@ function patchProp(el, key, val) {
     const isOn = (key: string) => /^on[A-Z]/.test(key);
     if (isOn(key)) {
         const event = key.slice(2).toLowerCase();
-        el.addEventListener(event, val);
+        el.addEventListener(event, nextVal);
     } else {
-        // todo setAttribute 需要了解下
-        el.setAttribute(key, val);
+        if (nextVal === undefined || nextVal === null) {
+            el.removeAttribute(key)
+        } else {
+            // todo setAttribute 需要了解下
+            // 2024-01-26 已经明白
+            el.setAttribute(key, nextVal);
+        }
+
+
     }
 }
 
