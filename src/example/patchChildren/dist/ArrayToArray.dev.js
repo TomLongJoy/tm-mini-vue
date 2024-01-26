@@ -52,20 +52,14 @@ var _guideMiniVueEsm = require("../../../lib/guide-mini-vue.esm.js");
 // (a b)
 //d c (a b)
 // i = 0, e1 = -1, e2 = 0
-var prevChildren = [(0, _guideMiniVueEsm.h)("p", {
-  key: "A"
-}, "A"), (0, _guideMiniVueEsm.h)("p", {
-  key: "B"
-}, "B")];
-var nextChildren = [(0, _guideMiniVueEsm.h)("p", {
-  key: "D"
-}, "D"), (0, _guideMiniVueEsm.h)("p", {
-  key: "C"
-}, "C"), (0, _guideMiniVueEsm.h)("p", {
-  key: "A"
-}, "A"), (0, _guideMiniVueEsm.h)("p", {
-  key: "B"
-}, "B")]; // 4. 老的比新的长
+// const prevChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
+// const nextChildren = [
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "C" }, "C"),
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+// ];
+// 4. 老的比新的长
 //     删除老的
 // 左侧
 // (a b) c
@@ -95,30 +89,9 @@ var nextChildren = [(0, _guideMiniVueEsm.h)("p", {
 // D 节点在新的里面是没有的 - 需要删除掉
 // C 节点 props 也发生了变化
 // const prevChildren = [
-//     h("p", { key: "A" }, "A"),
-//     h("p", { key: "B" }, "B"),
-//     h("p", { key: "C", id: "c-prev" }, "C"),
-//     h("p", { key: "D" }, "D"),
-//     h("p", { key: "F" }, "F"),
-//     h("p", { key: "G" }, "G"),
-// ];
-// const nextChildren = [
-//     h("p", { key: "A" }, "A"),
-//     h("p", { key: "B" }, "B"),
-//     h("p", { key: "E" }, "E"),
-//     h("p", { key: "C", id: "c-next" }, "C"),
-//     h("p", { key: "F" }, "F"),
-//     h("p", { key: "G" }, "G"),
-// ];
-// 5.1.1
-// a,b,(c,e,d),f,g
-// a,b,(e,c),f,g
-// 中间部分，老的比新的多， 那么多出来的直接就可以被干掉(优化删除逻辑)
-// const prevChildren = [
 //   h("p", { key: "A" }, "A"),
 //   h("p", { key: "B" }, "B"),
 //   h("p", { key: "C", id: "c-prev" }, "C"),
-//   h("p", { key: "E" }, "E"),
 //   h("p", { key: "D" }, "D"),
 //   h("p", { key: "F" }, "F"),
 //   h("p", { key: "G" }, "G"),
@@ -127,11 +100,44 @@ var nextChildren = [(0, _guideMiniVueEsm.h)("p", {
 //   h("p", { key: "A" }, "A"),
 //   h("p", { key: "B" }, "B"),
 //   h("p", { key: "E" }, "E"),
-//   h("p", { key: "C", id:"c-next" }, "C"),
+//   h("p", { key: "C", id: "c-next" }, "C"),
 //   h("p", { key: "F" }, "F"),
 //   h("p", { key: "G" }, "G"),
 // ];
-// 2 移动 (节点存在于新的和老的里面，但是位置变了)
+// 5.1.1
+// a,b,(c,e,d),f,g
+// a,b,(e,c),f,g
+// 中间部分，老的比新的多， 那么多出来的直接就可以被干掉(优化删除逻辑)
+var prevChildren = [(0, _guideMiniVueEsm.h)("p", {
+  key: "A"
+}, "A"), (0, _guideMiniVueEsm.h)("p", {
+  key: "B"
+}, "B"), (0, _guideMiniVueEsm.h)("p", {
+  key: "C",
+  id: "c-prev"
+}, "C"), (0, _guideMiniVueEsm.h)("p", {
+  key: "E"
+}, "E"), (0, _guideMiniVueEsm.h)("p", {
+  key: "D"
+}, "D"), (0, _guideMiniVueEsm.h)("p", {
+  key: "F"
+}, "F"), (0, _guideMiniVueEsm.h)("p", {
+  key: "G"
+}, "G")];
+var nextChildren = [(0, _guideMiniVueEsm.h)("p", {
+  key: "A"
+}, "A"), (0, _guideMiniVueEsm.h)("p", {
+  key: "B"
+}, "B"), (0, _guideMiniVueEsm.h)("p", {
+  key: "E"
+}, "E"), (0, _guideMiniVueEsm.h)("p", {
+  key: "C",
+  id: "c-next"
+}, "C"), (0, _guideMiniVueEsm.h)("p", {
+  key: "F"
+}, "F"), (0, _guideMiniVueEsm.h)("p", {
+  key: "G"
+}, "G")]; // 2 移动 (节点存在于新的和老的里面，但是位置变了)
 // 2.1
 // a,b,(c,d,e),f,g
 // a,b,(e,c,d),f,g
