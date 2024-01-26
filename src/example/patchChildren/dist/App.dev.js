@@ -25,7 +25,8 @@ var _default = {
       tId: 1
     }, [(0, _guideMiniVueEsm.h)("p", {}, "主页"), // h(ArrayToText),
     // h(TextToText),
-    (0, _guideMiniVueEsm.h)(_TextToArray["default"]) // h(ArrayToArray), // 比较复杂 ， diff算法。
+    // h(TextToArray)
+    (0, _guideMiniVueEsm.h)(_ArrayToArray["default"]) // 比较复杂 ， diff算法。
     ]);
   }
 };

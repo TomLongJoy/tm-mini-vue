@@ -11,29 +11,29 @@ var _guideMiniVueEsm = require("../../../lib/guide-mini-vue.esm.js");
 // (a b) c
 // (a b) d e
 // const prevChildren = [
-//     h("p", { key: "A" }, "A"),
-//     h("p", { key: "B" }, "B"),
-//     h("p", { key: "C" }, "C"),
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "C" }, "C"),
 // ];
 // const nextChildren = [
-//     h("p", { key: "A" }, "A"),
-//     h("p", { key: "B" }, "B"),
-//     h("p", { key: "D" }, "D"),
-//     h("p", { key: "E" }, "E"),
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "E" }, "E"),
 // ];
 // 2. 右侧的对比
 // a (b c)
 // d e (b c)
 // const prevChildren = [
-//     h("p", { key: "A" }, "A"),
-//     h("p", { key: "B" }, "B"),
-//     h("p", { key: "C" }, "C"),
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "C" }, "C"),
 // ];
 // const nextChildren = [
-//     h("p", { key: "D" }, "D"),
-//     h("p", { key: "E" }, "E"),
-//     h("p", { key: "B" }, "B"),
-//     h("p", { key: "C" }, "C"),
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "C" }, "C"),
 // ];
 // 3. 新的比老的长
 //     创建新的
@@ -45,20 +45,27 @@ var _guideMiniVueEsm = require("../../../lib/guide-mini-vue.esm.js");
 // const nextChildren = [
 //   h("p", { key: "A" }, "A"),
 //   h("p", { key: "B" }, "B"),
-//   h("p", { key: "C" }, "C"), 
+//   h("p", { key: "C" }, "C"),
 //   h("p", { key: "D" }, "D"),
 // ];
 // 右侧
 // (a b)
-// c (a b)
+//d c (a b)
 // i = 0, e1 = -1, e2 = 0
-// const prevChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
-// const nextChildren = [
-//   h("p", { key: "C" }, "C"),
-//   h("p", { key: "A" }, "A"),
-//   h("p", { key: "B" }, "B"),
-// ];
-// 4. 老的比新的长
+var prevChildren = [(0, _guideMiniVueEsm.h)("p", {
+  key: "A"
+}, "A"), (0, _guideMiniVueEsm.h)("p", {
+  key: "B"
+}, "B")];
+var nextChildren = [(0, _guideMiniVueEsm.h)("p", {
+  key: "D"
+}, "D"), (0, _guideMiniVueEsm.h)("p", {
+  key: "C"
+}, "C"), (0, _guideMiniVueEsm.h)("p", {
+  key: "A"
+}, "A"), (0, _guideMiniVueEsm.h)("p", {
+  key: "B"
+}, "B")]; // 4. 老的比新的长
 //     删除老的
 // 左侧
 // (a b) c
@@ -192,20 +199,19 @@ var _guideMiniVueEsm = require("../../../lib/guide-mini-vue.esm.js");
 //   h("p", { key: "G" }, "G"),
 // ];
 // fix c 节点应该是 move 而不是删除之后重新创建的
-var prevChildren = [(0, _guideMiniVueEsm.h)("p", {
-  key: "A"
-}, "A"), (0, _guideMiniVueEsm.h)("p", {}, "C"), (0, _guideMiniVueEsm.h)("p", {
-  key: "B"
-}, "B"), (0, _guideMiniVueEsm.h)("p", {
-  key: "D"
-}, "D")];
-var nextChildren = [(0, _guideMiniVueEsm.h)("p", {
-  key: "A"
-}, "A"), (0, _guideMiniVueEsm.h)("p", {
-  key: "B"
-}, "B"), (0, _guideMiniVueEsm.h)("p", {}, "C"), (0, _guideMiniVueEsm.h)("p", {
-  key: "D"
-}, "D")];
+// const prevChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", {}, "C"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "D" }, "D"),
+// ];
+// const nextChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", {}, "C"),
+//   h("p", { key: "D" }, "D"),
+// ];
+
 var _default = {
   name: "ArrayToArray",
   setup: function setup() {

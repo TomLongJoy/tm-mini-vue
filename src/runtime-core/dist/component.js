@@ -8,7 +8,6 @@ var componentProps_1 = require("./componentProps");
 var componentPublicInstance_1 = require("./componentPublicInstance");
 var componentSlots_1 = require("./componentSlots");
 function createComponentInstance(vnode, parent) {
-    console.log("createComponentInstance", parent);
     var componet = {
         vnode: vnode,
         type: vnode.type,

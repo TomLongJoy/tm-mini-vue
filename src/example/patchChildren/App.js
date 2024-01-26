@@ -15,8 +15,8 @@ export default {
             h("p", {}, "主页"),
             // h(ArrayToText),
             // h(TextToText),
-            h(TextToArray)
-            // h(ArrayToArray), // 比较复杂 ， diff算法。
+            // h(TextToArray)
+            h(ArrayToArray), // 比较复杂 ， diff算法。
         ])
     }
 }
