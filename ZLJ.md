@@ -5,6 +5,7 @@
     2.展开所有 Ctrl+K+J
     3.折叠当前方法 Ctrl+Shift+[ 
     4.展开当前方法 Ctrl+Shift+]
+    5.递归展开折叠 Ctrl+k Ctrl+] 
 ```
 
 ### watch

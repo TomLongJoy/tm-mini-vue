@@ -3,7 +3,6 @@ import { createRender } from "../runtime-core"; //  "moduleResolution": "node10"
 
 
 function createElement(type: any) {
-    console.log("createElement -- ")
     return document.createElement(type)
 }
 
@@ -13,7 +12,6 @@ function patchProp(el, key, val) {
     // on + Event name
     //onMousedown 
     // debugger
-    console.log("patchProp -- ")
     const isOn = (key: string) => /^on[A-Z]/.test(key);
     if (isOn(key)) {
         const event = key.slice(2).toLowerCase();
@@ -25,7 +23,6 @@ function patchProp(el, key, val) {
 }
 
 function insert(el, parent) {
-    console.log("insert -- ")
 
     parent.append(el)
 }
