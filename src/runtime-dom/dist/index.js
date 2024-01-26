@@ -40,10 +40,21 @@ function patchProp(el, key, prevVal, nextVal) {
 function insert(el, parent) {
     parent.append(el);
 }
+function remove(child) {
+    var parent = child.parentNode;
+    if (parent) {
+        parent.removeChild(child);
+    }
+}
+function setElementText(el, text) {
+    el.textContent = text;
+}
 var renderer = runtime_core_1.createRender({
     createElement: createElement,
     patchProp: patchProp,
-    insert: insert
+    insert: insert,
+    remove: remove,
+    setElementText: setElementText
 });
 function createApp() {
     var args = [];
