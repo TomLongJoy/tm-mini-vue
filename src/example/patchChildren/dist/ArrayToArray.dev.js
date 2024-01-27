@@ -108,36 +108,24 @@ var _guideMiniVueEsm = require("../../../lib/guide-mini-vue.esm.js");
 // a,b,(c,e,d),f,g
 // a,b,(e,c),f,g
 // 中间部分，老的比新的多， 那么多出来的直接就可以被干掉(优化删除逻辑)
-var prevChildren = [(0, _guideMiniVueEsm.h)("p", {
-  key: "A"
-}, "A"), (0, _guideMiniVueEsm.h)("p", {
-  key: "B"
-}, "B"), (0, _guideMiniVueEsm.h)("p", {
-  key: "C",
-  id: "c-prev"
-}, "C"), (0, _guideMiniVueEsm.h)("p", {
-  key: "E"
-}, "E"), (0, _guideMiniVueEsm.h)("p", {
-  key: "D"
-}, "D"), (0, _guideMiniVueEsm.h)("p", {
-  key: "F"
-}, "F"), (0, _guideMiniVueEsm.h)("p", {
-  key: "G"
-}, "G")];
-var nextChildren = [(0, _guideMiniVueEsm.h)("p", {
-  key: "A"
-}, "A"), (0, _guideMiniVueEsm.h)("p", {
-  key: "B"
-}, "B"), (0, _guideMiniVueEsm.h)("p", {
-  key: "E"
-}, "E"), (0, _guideMiniVueEsm.h)("p", {
-  key: "C",
-  id: "c-next"
-}, "C"), (0, _guideMiniVueEsm.h)("p", {
-  key: "F"
-}, "F"), (0, _guideMiniVueEsm.h)("p", {
-  key: "G"
-}, "G")]; // 2 移动 (节点存在于新的和老的里面，但是位置变了)
+// const prevChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "C", id: "c-prev" }, "C"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
+// const nextChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "C", id: "c-next" }, "C"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
+// 2 移动 (节点存在于新的和老的里面，但是位置变了)
 // 2.1
 // a,b,(c,d,e),f,g
 // a,b,(e,c,d),f,g
@@ -184,27 +172,40 @@ var nextChildren = [(0, _guideMiniVueEsm.h)("p", {
 // 综合例子
 // a,b,(c,d,e,z),f,g
 // a,b,(d,c,y,e),f,g
-// const prevChildren = [
-//   h("p", { key: "A" }, "A"),
-//   h("p", { key: "B" }, "B"),
-//   h("p", { key: "C" }, "C"),
-//   h("p", { key: "D" }, "D"),
-//   h("p", { key: "E" }, "E"),
-//   h("p", { key: "Z" }, "Z"),
-//   h("p", { key: "F" }, "F"),
-//   h("p", { key: "G" }, "G"),
-// ];
-// const nextChildren = [
-//   h("p", { key: "A" }, "A"),
-//   h("p", { key: "B" }, "B"), 
-//   h("p", { key: "D" }, "D"),
-//   h("p", { key: "C" }, "C"),
-//   h("p", { key: "Y" }, "Y"),
-//   h("p", { key: "E" }, "E"),
-//   h("p", { key: "F" }, "F"),
-//   h("p", { key: "G" }, "G"),
-// ];
-// fix c 节点应该是 move 而不是删除之后重新创建的
+var prevChildren = [(0, _guideMiniVueEsm.h)("p", {
+  key: "A"
+}, "A"), (0, _guideMiniVueEsm.h)("p", {
+  key: "B"
+}, "B"), (0, _guideMiniVueEsm.h)("p", {
+  key: "C"
+}, "C"), (0, _guideMiniVueEsm.h)("p", {
+  key: "D"
+}, "D"), (0, _guideMiniVueEsm.h)("p", {
+  key: "E"
+}, "E"), (0, _guideMiniVueEsm.h)("p", {
+  key: "Z"
+}, "Z"), (0, _guideMiniVueEsm.h)("p", {
+  key: "F"
+}, "F"), (0, _guideMiniVueEsm.h)("p", {
+  key: "G"
+}, "G")];
+var nextChildren = [(0, _guideMiniVueEsm.h)("p", {
+  key: "A"
+}, "A"), (0, _guideMiniVueEsm.h)("p", {
+  key: "B"
+}, "B"), (0, _guideMiniVueEsm.h)("p", {
+  key: "D"
+}, "D"), (0, _guideMiniVueEsm.h)("p", {
+  key: "C"
+}, "C"), (0, _guideMiniVueEsm.h)("p", {
+  key: "Y"
+}, "Y"), (0, _guideMiniVueEsm.h)("p", {
+  key: "E"
+}, "E"), (0, _guideMiniVueEsm.h)("p", {
+  key: "F"
+}, "F"), (0, _guideMiniVueEsm.h)("p", {
+  key: "G"
+}, "G")]; // fix c 节点应该是 move 而不是删除之后重新创建的
 // const prevChildren = [
 //   h("p", { key: "A" }, "A"),
 //   h("p", {}, "C"),

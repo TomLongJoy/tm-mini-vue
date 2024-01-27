@@ -149,13 +149,20 @@ function createRender(options) {
             var tobePatched = e2 - s2 + 1;
             var patched = 0;
             var keyToNewIndexMap = new Map();
-            for (var i_1 = s2; i_1 <= e2; i_1++) {
-                var nextChild = c2[i_1];
-                keyToNewIndexMap.set(nextChild.key, i_1);
+            var newIndexToOldIndexMap = new Array(tobePatched);
+            var moved = false;
+            var maxNewIndexSoFar = 0;
+            newIndexToOldIndexMap[i] = 0;
+            for (var i_1 = 0; i_1 < tobePatched; i_1++) {
+                newIndexToOldIndexMap[i_1] = 0;
+            }
+            for (var i_2 = s2; i_2 <= e2; i_2++) {
+                var nextChild = c2[i_2];
+                keyToNewIndexMap.set(nextChild.key, i_2);
             }
             // null undefined 
-            for (var i_2 = s1; i_2 <= e1; i_2++) {
-                var prevChild = c1[i_2];
+            for (var i_3 = s1; i_3 <= e1; i_3++) {
+                var prevChild = c1[i_3];
                 if (patched >= tobePatched) {
                     hostRemove(prevChild.el);
                     continue;
@@ -165,9 +172,9 @@ function createRender(options) {
                     newIndex = keyToNewIndexMap.get(prevChild.key);
                 }
                 else {
-                    for (var j = s2; j < e2; j++) {
-                        if (isSomeVNodeType(prevChild, c2[j])) {
-                            newIndex = j;
+                    for (var j_1 = s2; j_1 < e2; j_1++) {
+                        if (isSomeVNodeType(prevChild, c2[j_1])) {
+                            newIndex = j_1;
                             break;
                         }
                     }
@@ -176,8 +183,34 @@ function createRender(options) {
                     hostRemove(prevChild.el);
                 }
                 else {
+                    if (newIndex >= maxNewIndexSoFar) {
+                        maxNewIndexSoFar = newIndex;
+                    }
+                    else {
+                        moved = true;
+                    }
+                    newIndexToOldIndexMap[newIndex - s2] = i_3 + 1;
                     patch(prevChild, c2[newIndex], container, parentComponent, null);
                     patched++;
+                }
+            }
+            var increasingNewIndexSequence = moved ? getSequence(newIndexToOldIndexMap) : [];
+            var j = increasingNewIndexSequence.length - 1;
+            for (var i_4 = (tobePatched - 1); i_4 >= 0; i_4--) {
+                var nextindex = i_4 + s2;
+                var nextChild = c2[nextindex];
+                var anchor = nextindex + 1 < l2 ? c2[nextindex + 1].el : null;
+                if (newIndexToOldIndexMap[i_4] === 0) {
+                    patch(null, nextChild, container, parentComponent, anchor);
+                }
+                else if (moved) {
+                    if (j < 0 || i_4 !== increasingNewIndexSequence[j]) {
+                        console.log("移动位置");
+                        hostInsert(nextChild.el, container, anchor);
+                    }
+                    else {
+                        j--;
+                    }
                 }
             }
         }
@@ -277,3 +310,45 @@ function createRender(options) {
     };
 }
 exports.createRender = createRender;
+//  [4,2,3,1,5]  --->[2,3,5]
+function getSequence(arr) {
+    var p = arr.slice();
+    var result = [0];
+    var i, j, u, v, c;
+    var len = arr.length;
+    for (i = 0; i < len; i++) {
+        var arrI = arr[i];
+        if (arrI !== 0) {
+            j = result[result.length - 1];
+            if (arr[j] < arrI) {
+                p[i] = j;
+                result.push(i);
+                continue;
+            }
+            u = 0;
+            v = result.length - 1;
+            while (u < v) {
+                c = (u + v) >> 1;
+                if (arr[result[c]] < arrI) {
+                    u = c + 1;
+                }
+                else {
+                    v = c;
+                }
+            }
+            if (arrI < arr[result[u]]) {
+                if (u > 0) {
+                    p[i] = result[u - 1];
+                }
+                result[u] = i;
+            }
+        }
+    }
+    u = result.length;
+    v = result[u - 1];
+    while (u-- > 0) {
+        result[u] = v;
+        v = p[v];
+    }
+    return result;
+}
