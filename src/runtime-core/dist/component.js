@@ -11,6 +11,7 @@ function createComponentInstance(vnode, parent) {
     var componet = {
         vnode: vnode,
         type: vnode.type,
+        next: null,
         setupState: {},
         props: {},
         slots: {},

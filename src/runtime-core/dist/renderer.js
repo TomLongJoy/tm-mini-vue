@@ -4,6 +4,7 @@ exports.createRender = void 0;
 var effect_1 = require("../reactivity/effect");
 var shared_1 = require("../shared");
 var component_1 = require("./component");
+var componentUpdateUtils_1 = require("./componentUpdateUtils");
 var createApp_1 = require("./createApp");
 var vnode_1 = require("./vnode");
 function createRender(options) {
@@ -268,15 +269,31 @@ function createRender(options) {
         });
     }
     function processComponent(n1, n2, container, parentComponent, anchor) {
-        mountComponent(n2, container, parentComponent, anchor);
+        if (!n1) {
+            mountComponent(n2, container, parentComponent, anchor);
+        }
+        else {
+            updateComponent(n1, n2);
+        }
+    }
+    function updateComponent(n1, n2) {
+        var instance = (n2.component = n1.component);
+        if (componentUpdateUtils_1.shouldUpdateComponent(n1, n2)) {
+            instance.next = n2;
+            instance.update();
+        }
+        else {
+            n2.el = n1.el;
+            instance.vnode = n2;
+        }
     }
     function mountComponent(initialVNode, container, parentComponent, anchor) {
-        var instance = component_1.createComponentInstance(initialVNode, parentComponent);
+        var instance = (initialVNode.component = component_1.createComponentInstance(initialVNode, parentComponent));
         component_1.setupComponent(instance);
         setupRenderEffect(instance, initialVNode, container, anchor);
     }
     function setupRenderEffect(instance, initialVNode, container, anchor) {
-        effect_1.effect(function () {
+        instance.update = effect_1.effect(function () {
             if (!instance.isMounted) {
                 var proxy = instance.proxy;
                 var subTree = (instance.subTree = instance.render.call(proxy));
@@ -288,6 +305,13 @@ function createRender(options) {
                 instance.isMounted = true;
             }
             else {
+                console.log("update");
+                //需要一个 vnode 
+                var next = instance.next, vnode = instance.vnode;
+                if (next) {
+                    next.el = vnode.el;
+                    updateComponentPreRender(instance, next);
+                }
                 var proxy = instance.proxy;
                 var subTree = instance.render.call(proxy);
                 var prevSubTree = instance.subTree;
@@ -310,6 +334,11 @@ function createRender(options) {
     };
 }
 exports.createRender = createRender;
+function updateComponentPreRender(instance, nextVNode) {
+    instance.vnode = nextVNode;
+    instance.next = null;
+    instance.props = nextVNode.props;
+}
 //  [4,2,3,1,5]  --->[2,3,5]
 function getSequence(arr) {
     var p = arr.slice();
