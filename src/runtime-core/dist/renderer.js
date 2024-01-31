@@ -6,6 +6,7 @@ var shared_1 = require("../shared");
 var component_1 = require("./component");
 var componentUpdateUtils_1 = require("./componentUpdateUtils");
 var createApp_1 = require("./createApp");
+var scheduler_1 = require("./scheduler");
 var vnode_1 = require("./vnode");
 function createRender(options) {
     // 此处的方法 在  runtime-dom\index.ts 里面实现
@@ -317,6 +318,11 @@ function createRender(options) {
                 var prevSubTree = instance.subTree;
                 instance.subTree = subTree;
                 patch(prevSubTree, subTree, container, instance, anchor);
+            }
+        }, {
+            scheduler: function () {
+                console.log("update - scheduler ");
+                scheduler_1.queueJobs(instance.update);
             }
         });
     }
