@@ -1,5 +1,10 @@
 import { NodeTypes } from "./ast";
 
+const enum TagType {
+    Start,
+    End
+}
+
 export function baseParse(content: string) {
 
     const context = createParserContext(content);
@@ -11,9 +16,18 @@ function parseChildren(context) {
     const nodes: any = [];
 
     let node;
-    if (context.source.startsWith("{{")) {
+    const s = context.source;
+    if (s.startsWith("{{")) {
         node = parseInterpolation(context);
+    } else if (s[0] === "<") {
+        if (/[a-z]/i.test(s[1])) {
+            console.log("parse element ");
+            node = parseElement(context);
+        }
+    }
 
+    if (!node) {
+        node = parseText(context);
     }
     nodes.push(node);
     return nodes;
@@ -59,3 +73,37 @@ function createParserContext(content: string): any {
         source: content
     }
 }
+
+function parseElement(context: any) {
+    // Implement 
+    //1. 解析 tag
+    const element = parseTag(context, TagType.Start);
+    parseTag(context, TagType.End);
+    console.log("------------------", context.source)
+    return element;
+}
+function parseTag(context: any, type: TagType) {
+    const match: any = /^<\/?([a-z]*)/i.exec(context.source);
+    console.log(match);
+    const tag = match[1];
+    //2. 删除处理完成的代码
+    advaceBy(context, match[0].length);
+
+    advaceBy(context, 1);
+    if (type === TagType.End) return;
+
+    return {
+        type: NodeTypes.ELEMENT,
+        tag
+    };
+}
+
+function parseText(context: any): any {
+    //1.获取content
+    //2. 推进
+    return {
+        type: NodeTypes.TEXT,
+        context: "some text"
+    }
+}
+
