@@ -20,7 +20,8 @@ describe('Parse', function () {
                 //root
                 expect(ast.children[0]).toStrictEqual({
                     type: 2 /* ELEMENT */,
-                    tag: "div"
+                    tag: "div",
+                    children: []
                 });
             });
         });
@@ -32,6 +33,58 @@ describe('Parse', function () {
                     content: "some text"
                 });
             });
+        });
+        test("hello world", function () {
+            var ast = parse_1.baseParse("<div>hi,{{message}}</div>");
+            expect(ast.children[0]).toStrictEqual({
+                type: 2 /* ELEMENT */,
+                tag: "div",
+                children: [
+                    {
+                        type: 3 /* TEXT */,
+                        content: "hi,"
+                    },
+                    {
+                        type: 0 /* INTERPOLATION */,
+                        content: {
+                            type: 1 /* SIMPLE_EXPRESSION */,
+                            content: "message"
+                        }
+                    }
+                ]
+            });
+        });
+        test("Next element ", function () {
+            var ast = parse_1.baseParse("<div><p>hi</p>{{message}}</div>");
+            expect(ast.children[0]).toStrictEqual({
+                type: 2 /* ELEMENT */,
+                tag: "div",
+                children: [
+                    {
+                        type: 2 /* ELEMENT */,
+                        tag: "p",
+                        children: [
+                            {
+                                type: 3 /* TEXT */,
+                                content: "hi"
+                            }
+                        ]
+                    },
+                    {
+                        type: 0 /* INTERPOLATION */,
+                        content: {
+                            type: 1 /* SIMPLE_EXPRESSION */,
+                            content: "message"
+                        }
+                    }
+                ]
+            });
+        });
+        test('should throw erro when lack end tag', function () {
+            // baseParse("<div><span></div>")
+            expect(function () {
+                parse_1.baseParse("<div><span></div>");
+            }).toThrow("缺少结束标签:span");
         });
     });
 });
