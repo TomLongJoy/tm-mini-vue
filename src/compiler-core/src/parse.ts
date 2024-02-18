@@ -42,10 +42,12 @@ function parseInterpolation(context) {
     const closeIndex = context.source.indexOf("}}", openDelimiter.length);
     advaceBy(context, openDelimiter.length);
     const rawContentLength = closeIndex - openDelimiter.length;
-    const rawContent = context.source.slice(0, rawContentLength);
+
+
+    const rawContent = parseTextData(context, rawContentLength);  //context.source.slice(0, rawContentLength);
     const content = rawContent.trim();
 
-    advaceBy(context, rawContentLength + closeDelimiter.length);
+    advaceBy(context, closeDelimiter.length);
     // context.source = context.source.slice(rawContentLength + closeDelimiter.length);
 
 
@@ -99,11 +101,19 @@ function parseTag(context: any, type: TagType) {
 }
 
 function parseText(context: any): any {
-    //1.获取content
-    //2. 推进
+
+    const content = parseTextData(context, context.source.length);
     return {
         type: NodeTypes.TEXT,
-        context: "some text"
+        content
     }
+}
+
+function parseTextData(context: any, length: number) {
+    //1.获取content
+    const content = context.source.slice(0, length);
+    //2. 推进
+    advaceBy(context, length);
+    return content;
 }
 

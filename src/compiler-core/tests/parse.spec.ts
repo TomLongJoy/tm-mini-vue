@@ -32,7 +32,7 @@ describe('Parse', () => {
                 const ast = baseParse("some text")
                 expect(ast.children[0]).toStrictEqual({
                     type: NodeTypes.TEXT,
-                    context: "some text"
+                    content: "some text"
                 })
             })
         })

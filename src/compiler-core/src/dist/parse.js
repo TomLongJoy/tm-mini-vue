@@ -32,9 +32,9 @@ function parseInterpolation(context) {
     var closeIndex = context.source.indexOf("}}", openDelimiter.length);
     advaceBy(context, openDelimiter.length);
     var rawContentLength = closeIndex - openDelimiter.length;
-    var rawContent = context.source.slice(0, rawContentLength);
+    var rawContent = parseTextData(context, rawContentLength); //context.source.slice(0, rawContentLength);
     var content = rawContent.trim();
-    advaceBy(context, rawContentLength + closeDelimiter.length);
+    advaceBy(context, closeDelimiter.length);
     // context.source = context.source.slice(rawContentLength + closeDelimiter.length);
     return {
         type: 0 /* INTERPOLATION */,
@@ -80,10 +80,16 @@ function parseTag(context, type) {
     };
 }
 function parseText(context) {
-    //1.获取content
-    //2. 推进
+    var content = parseTextData(context, context.source.length);
     return {
         type: 3 /* TEXT */,
-        context: "some text"
+        content: content
     };
+}
+function parseTextData(context, length) {
+    //1.获取content
+    var content = context.source.slice(0, length);
+    //2. 推进
+    advaceBy(context, length);
+    return content;
 }

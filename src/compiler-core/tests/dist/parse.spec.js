@@ -29,7 +29,7 @@ describe('Parse', function () {
                 var ast = parse_1.baseParse("some text");
                 expect(ast.children[0]).toStrictEqual({
                     type: 3 /* TEXT */,
-                    context: "some text"
+                    content: "some text"
                 });
             });
         });
