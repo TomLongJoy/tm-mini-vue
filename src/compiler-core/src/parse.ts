@@ -125,7 +125,7 @@ function parseElement(context: any, ancestors) {
         throw new Error(`缺少结束标签:${element.tag}`);
     }
 
-    console.log("------------------", context.source)
+    // console.log("------------------", context.source)
     return element;
 }
 
@@ -138,7 +138,7 @@ function startsWithEndTagOpen(source, tag) {
 
 function parseTag(context: any, type: TagType) {
     const match: any = /^<\/?([a-z]*)/i.exec(context.source);
-    console.log(match);
+    // console.log(match);
     const tag = match[1];
     //2. 删除处理完成的代码
     advaceBy(context, match[0].length);

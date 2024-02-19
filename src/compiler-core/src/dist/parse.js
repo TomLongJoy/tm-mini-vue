@@ -92,7 +92,7 @@ function parseElement(context, ancestors) {
     else {
         throw new Error("\u7F3A\u5C11\u7ED3\u675F\u6807\u7B7E:" + element.tag);
     }
-    console.log("------------------", context.source);
+    // console.log("------------------", context.source)
     return element;
 }
 function startsWithEndTagOpen(source, tag) {
@@ -100,7 +100,7 @@ function startsWithEndTagOpen(source, tag) {
 }
 function parseTag(context, type) {
     var match = /^<\/?([a-z]*)/i.exec(context.source);
-    console.log(match);
+    // console.log(match);
     var tag = match[1];
     //2. 删除处理完成的代码
     advaceBy(context, match[0].length);
