@@ -83,9 +83,9 @@ function parseElement(context, ancestors) {
     ancestors.push(element);
     element.children = parseChildren(context, ancestors);
     ancestors.pop();
-    console.log("---------------");
-    console.log(element.tag);
-    console.log(context.source);
+    // console.log("---------------");
+    // console.log(element.tag);
+    // console.log(context.source);
     if (startsWithEndTagOpen(context.source, element.tag)) {
         parseTag(context, 1 /* End */);
     }

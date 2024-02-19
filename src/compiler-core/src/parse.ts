@@ -115,9 +115,9 @@ function parseElement(context: any, ancestors) {
     ancestors.pop()
 
 
-    console.log("---------------");
-    console.log(element.tag);
-    console.log(context.source);
+    // console.log("---------------");
+    // console.log(element.tag);
+    // console.log(context.source);
 
     if (startsWithEndTagOpen(context.source, element.tag)) {
         parseTag(context, TagType.End);

@@ -2,10 +2,12 @@
 exports.__esModule = true;
 exports.transform = void 0;
 function transform(root, options) {
+    if (options === void 0) { options = {}; }
     var context = createTransformContext(root, options);
     //1.遍历 - 深度优先搜索
     traversNode(root, context);
     //2. 修改 text content 
+    createRootCodegen(root);
 }
 exports.transform = transform;
 function traversNode(node, context) {
@@ -31,4 +33,7 @@ function createTransformContext(root, options) {
         nodeTransforms: options.nodeTransforms || []
     };
     return context;
+}
+function createRootCodegen(root) {
+    root.codegenNode = root.children[0];
 }
