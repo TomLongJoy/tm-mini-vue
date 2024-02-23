@@ -96,7 +96,8 @@ function advaceBy(context: any, length: number) {
 function createRoot(children: any) {
     return {
         children,
-        type: NodeTypes.ROOT
+        type: NodeTypes.ROOT,
+        helpers: []
     }
 }
 
@@ -163,11 +164,7 @@ function parseText(context: any): any {
         if (index !== -1 && endIndex > index) {
             endIndex = index;
         }
-
     }
-
-
-
 
     const content = parseTextData(context, endIndex);
     return {

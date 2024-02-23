@@ -1,11 +1,12 @@
 "use strict";
 exports.__esModule = true;
-exports.toHandlerKey = exports.capitalize = exports.camelize = exports.hasOwn = exports.hasChanged = exports.isObject = exports.EMPTY_OBJ = exports.extend = void 0;
+exports.toHandlerKey = exports.capitalize = exports.camelize = exports.hasOwn = exports.hasChanged = exports.isString = exports.isObject = exports.EMPTY_OBJ = exports.extend = void 0;
 exports.extend = Object.assign;
 exports.EMPTY_OBJ = {};
 exports.isObject = function (val) {
     return val !== null && typeof val === 'object';
 };
+exports.isString = function (value) { return typeof value === "string"; };
 exports.hasChanged = function (val, newValue) {
     return !Object.is(val, newValue);
 };
