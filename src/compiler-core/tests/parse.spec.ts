@@ -90,7 +90,7 @@ describe('Parse', () => {
         test('should throw erro when lack end tag', () => {
             // baseParse("<div><span></div>")
             expect(() => {
-                baseParse("<div><span></div>")
+                baseParse("<div></div>")
             }).toThrow("缺少结束标签:span");
         })
 

@@ -4,21 +4,20 @@ import { TO_DISPLAY_STRING } from "./runtimeHelpers";
 
 export function transform(root, options = {}) {
 
-    const context = createTransformContext(root, options)
-    //1.遍历 - 深度优先搜索
+    const context = createTransformContext(root, options);
+    //1. 遍历 - 深度优先搜索
     traverseNode(root, context);
+    //2. 修改 nextcontent
 
-    //2. 修改 text content 
     createRootCodegen(root);
-    root.helpers = [...context.helpers.keys()]
-
+    root.helpers = [...context.helpers.keys()];
 }
 
 function traverseNode(node: any, context) {
 
-    const nodeTransforms = context.nodeTransforms;
 
-    const exitFns: any = [];
+    const nodeTransforms = context.nodeTransforms;
+    const exitFns: any = []
     for (let i = 0; i < nodeTransforms.length; i++) {
         const transform = nodeTransforms[i];
         const onExit = transform(node, context);
@@ -32,14 +31,12 @@ function traverseNode(node: any, context) {
         case NodeTypes.ROOT:
         case NodeTypes.ELEMENT:
             traverseChildren(node, context);
-
             break;
-
         default:
             break;
     }
 
-    let i = exitFns.length;
+    let i = exitFns.length
     while (i--) {
         exitFns[i]();
     }
@@ -50,6 +47,7 @@ function traverseChildren(node: any, context: any) {
     for (let i = 0; i < children.length; i++) {
         const node = children[i];
         traverseNode(node, context);
+
     }
 }
 
@@ -58,9 +56,9 @@ function createTransformContext(root: any, options: any) {
         root,
         nodeTransforms: options.nodeTransforms || [],
         helpers: new Map(),
-        helper(key): any {
+        helper(key) {
             context.helpers.set(key, 1);
-        }
+        },
     }
 
     return context;
@@ -69,13 +67,12 @@ function createTransformContext(root: any, options: any) {
 function createRootCodegen(root: any) {
 
     const child = root.children[0];
-
     if (child.type === NodeTypes.ELEMENT) {
-        root.codegenNode = child.codegenNode
+        root.codegenNode = child.codegenNode;
     } else {
+
         root.codegenNode = root.children[0];
     }
 
-    // root.codegenNode = root.children[0];
 }
 
