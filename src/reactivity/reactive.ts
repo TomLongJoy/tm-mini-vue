@@ -21,7 +21,7 @@ export function shallowReadonly(raw) {
 }
 
 export function isReactive(value) {
-    return !!value[ReactiveFlags.IS_REACTIVE];
+    return !!value[ReactiveFlags.IS_REACTIVE];// 
 }
 
 export function isReadonly(value) {

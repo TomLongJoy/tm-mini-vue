@@ -1,6 +1,17 @@
 import { Car } from "../test-class";
 
-describe.skip("reactive", () => {
+describe("reactive", () => {
+
+    it.only('objcet', () => {
+
+        var obj1: any = {}
+        var obj2: any = obj1;
+        obj2.name = "Xxx";
+        console.log(obj1.name);  //
+
+        expect(obj1).toBe(obj2)
+
+    })
 
     it("tes-js-class", () => {
         const benz = new Car("舒马赫", "benz");

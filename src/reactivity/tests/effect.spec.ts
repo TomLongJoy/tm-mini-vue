@@ -1,3 +1,4 @@
+// 0x000001
 import { effect, stop } from "../effect";
 import { reactive } from "../reactive";
 
