@@ -45,9 +45,7 @@ function cleanupEffect(effect: any) {
     effect.deps.forEach((dep: any) => {
         dep.delete(effect)
     });
-
     effect.deps.length = 0;
-
 }
 
 //todo -- 收集依赖 06视频 14:30

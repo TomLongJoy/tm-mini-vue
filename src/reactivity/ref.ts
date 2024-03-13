@@ -32,7 +32,6 @@ class RefImpl {
             this._value = convert(newValue);
             triggerEffects(this.dep)
         };
-
     }
 }
 

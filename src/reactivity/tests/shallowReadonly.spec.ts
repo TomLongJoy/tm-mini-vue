@@ -1,6 +1,6 @@
 import { isReadonly, shallowReadonly } from "../reactive"
 
-describe("shallowReadonly", () => {
+describe("shallowReadonly", () => { // 表层的
 
     test("should not mak non-reactive properties reactive", () => {
         const props = shallowReadonly({ n: { foo: 1 } });

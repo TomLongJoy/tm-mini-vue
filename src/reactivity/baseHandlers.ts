@@ -14,7 +14,7 @@ function createGetter(isReadOnly = false, shallow = false) {
         /*
         Reflect.get方法查找并返回target对象的name属性，如果没有该属性返回undefined
          */
-        debugger
+        // debugger
         if (key === ReactiveFlags.IS_REACTIVE) {
             return !isReadOnly;
         } else if (key === ReactiveFlags.IS_READONLY) {

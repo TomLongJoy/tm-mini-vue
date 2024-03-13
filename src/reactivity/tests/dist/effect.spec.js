@@ -1,59 +1,54 @@
+"use strict";
+exports.__esModule = true;
 // 0x000001
-import { effect, stop } from "../effect";
-import { reactive } from "../reactive";
-
-describe("happy path ", () => {
-    test("happy path one", () => {
-        const user = reactive({
+var effect_1 = require("../effect");
+var reactive_1 = require("../reactive");
+describe("happy path ", function () {
+    test("happy path one", function () {
+        var user = reactive_1.reactive({
             age: 10
-        })
-        let nextAge;
-        effect(() => {
+        });
+        var nextAge;
+        effect_1.effect(function () {
             nextAge = user.age + 1;
-        })
+        });
         expect(nextAge).toBe(11);
         // update 
         user.age++;
         expect(nextAge).toBe(12);
-    })
-
-    it("should return runner when call effect", () => {
+    });
+    it("should return runner when call effect", function () {
         //1. effect(fn) -> function ( runner ) -> fn -> return;
-
-        let foo = 10;
-        const runner = effect(() => {
+        var foo = 10;
+        var runner = effect_1.effect(function () {
             foo++;
             return "foo";
-        })
+        });
         expect(foo).toBe(11);
-        const r = runner();
+        var r = runner();
         expect(foo).toBe(12);
-        expect(r).toBe("foo")
-    })
+        expect(r).toBe("foo");
+    });
     // 从vue3复制来的。
-    it("scheduler", () => {
+    it("scheduler", function () {
         // 1.通过 effect 的第二个参数给定的一个 scheduler 的 fn
         // 2. effect 第一次执行的时候，还会执行fn
         // 3. 当响应式对象 set update 不执行 fn 而是执行 scheduler
         // 4. 如果说当执行 runner 的时候，会再次的执行 fn
         // 5.
-        let dummy;
-        let run: any;
-        const scheduler = jest.fn(() => { // https://blog.csdn.net/xiebaochun/article/details/117701677
+        var dummy;
+        var run;
+        var scheduler = jest.fn(function () {
             run = runner;
-        })
-        const obj = reactive({ foo: 1 });
-        const runner = effect(
-            () => {
-                dummy = obj.foo;
-            },
-            { scheduler }
-        );
+        });
+        var obj = reactive_1.reactive({ foo: 1 });
+        var runner = effect_1.effect(function () {
+            dummy = obj.foo;
+        }, { scheduler: scheduler });
         expect(scheduler).not.toHaveBeenCalled();
         expect(dummy).toBe(1);
         // should be called on first trigger
         obj.foo++; // 这里 obj.foo = obje.foo + 1;  
-
         expect(scheduler).toHaveBeenCalledTimes(1);
         // obj.foo = obj.foo + 1;  
         // expect(scheduler).toHaveBeenCalledTimes(2);
@@ -64,41 +59,33 @@ describe("happy path ", () => {
         // // should have run
         expect(dummy).toBe(2);
     });
-
-
-    it("stop", () => {
-
-        let dummy;
-        const obj = reactive({ prop: 1 });
-        const runner = effect(() => {
+    it("stop", function () {
+        var dummy;
+        var obj = reactive_1.reactive({ prop: 1 });
+        var runner = effect_1.effect(function () {
             dummy = obj.prop;
         });
         obj.prop = 2;
         expect(dummy).toBe(2);
-        stop(runner);
+        effect_1.stop(runner);
         // obj.prop = 3;
         // get set 
         // obj.prop = obj.prop + 1;
         obj.prop++;
         expect(dummy).toBe(2);
         runner();
-
         expect(dummy).toBe(3);
-    })
-    it("onStop", () => {
-        const obj = reactive({ foo: 1 });
-        const onStop = jest.fn();
-        let dummy;
-        const runner = effect(
-            () => {
-                dummy = obj.foo;
-            },
-            {
-                onStop,
-            }
-        );
-        stop(runner);
+    });
+    it("onStop", function () {
+        var obj = reactive_1.reactive({ foo: 1 });
+        var onStop = jest.fn();
+        var dummy;
+        var runner = effect_1.effect(function () {
+            dummy = obj.foo;
+        }, {
+            onStop: onStop
+        });
+        effect_1.stop(runner);
         expect(onStop).toBeCalledTimes(1);
-
-    })
-}) 
+    });
+});

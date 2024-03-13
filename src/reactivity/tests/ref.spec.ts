@@ -8,6 +8,8 @@ describe("ref", () => {
         const a = ref(1)
         expect(a.value).toBe(1);
     })
+
+
     it("should be reactive", () => {
         const a = ref(1);
         let dummy;
@@ -66,9 +68,6 @@ describe("ref", () => {
             age: ref(10),
             name: 'xiaohong',
         }
-
-
-
 
         const proxyUser = proxyRefs(user);
         expect(user.age.value).toBe(10);
