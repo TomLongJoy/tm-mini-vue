@@ -9,30 +9,30 @@ export const enum ReactiveFlags {
 }
 
 export function reactive(raw: any) {
-    return createRctiveObject(raw, mutableHandlers)
+    return createActiveObject(raw, mutableHandlers)
 }
 
 export function readonly(raw: any) {
-    return createRctiveObject(raw, readonlyHandlers)
+    return createActiveObject(raw, readonlyHandlers)
 }
 
 export function shallowReadonly(raw) {
-    return createRctiveObject(raw, shallowReadonlyHandlers)
+    return createActiveObject(raw, shallowReadonlyHandlers)
 }
 
 export function isReactive(value) {
-    return !!value[ReactiveFlags.IS_REACTIVE];// 
+    return !!value[ReactiveFlags.IS_REACTIVE];// 触发get
 }
 
 export function isReadonly(value) {
-    return !!value[ReactiveFlags.IS_READONLY]
+    return !!value[ReactiveFlags.IS_READONLY] // 触发的get
 }
 
 export function isProxy(value) {
     return isReactive(value) || isReadonly(value)
 }
 
-function createRctiveObject(target: any, baseHandlers) {
+function createActiveObject(target: any, baseHandlers) {
     if (!isObject(target)) {
         console.warn(`target ${target} 必须是一个对象`);
         return;
