@@ -5,21 +5,17 @@ let shouldTrack: any; // 是否需要收集
 
 export class ReactiveEffect {
     private _fn: any;
-    //onStop 4:28
     deps = [];
     active = true;
     onStop?: () => void;
-    // scheduler (调度器)
-    public scheduler: Function | undefined;
+    public scheduler: Function | undefined;// scheduler (调度器)
     constructor(fn: any, public _scheduler?: Function) {
         this._fn = fn;
         this.scheduler = _scheduler;
     }
     run() {
-
         //1.会收集依赖
         // shouldTrack 来做区分
-
         if (!this.active) {
             return this._fn();
         }
@@ -51,7 +47,6 @@ function cleanupEffect(effect: any) {
 //todo -- 收集依赖 06视频 14:30
 const targetMap = new Map();
 export function track(target: any, key: any) {
-
     if (!isTracking()) return;
     // target -> key -> dep
     let depsMap = targetMap.get(target);
@@ -75,11 +70,9 @@ export function trackEffects(dep) {
     //https://www.zhihu.com/question/439459521
     //https://zhuanlan.zhihu.com/p/576055727
     activeEffect.deps.push(dep); // 反向搜集
-
 }
 
 export function isTracking() { // 12集，10：45创建。  zlj 16集，10：12 有使用
-
     return shouldTrack && activeEffect !== undefined;
     // if (!activeEffect) return;
     // if (!shouldTrack) return;

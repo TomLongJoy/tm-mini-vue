@@ -7,7 +7,6 @@ var shouldTrack; // 是否需要收集
 var ReactiveEffect = /** @class */ (function () {
     function ReactiveEffect(fn, _scheduler) {
         this._scheduler = _scheduler;
-        //onStop 4:28
         this.deps = [];
         this.active = true;
         this._fn = fn;

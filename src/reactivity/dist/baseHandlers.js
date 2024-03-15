@@ -31,10 +31,7 @@ function createGetter(isReadOnly, shallow) {
             return isReadOnly ? reactive_1.readonly(res) : reactive_1.reactive(res);
         }
         if (!isReadOnly) {
-            /*
-                跟踪
-             */
-            //info 收集依赖
+            //info 收集依赖 跟踪
             effect_1.track(target, key);
         }
         return res;

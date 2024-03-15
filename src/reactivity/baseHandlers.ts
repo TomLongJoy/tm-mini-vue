@@ -8,8 +8,6 @@ const readonlyGet = createGetter(true);
 const shallowReadonlyGet = createGetter(true, true);
 
 function createGetter(isReadOnly = false, shallow = false) {
-
-
     return function get(target: object, key: any) {
         /*
         Reflect.get方法查找并返回target对象的name属性，如果没有该属性返回undefined
@@ -20,25 +18,16 @@ function createGetter(isReadOnly = false, shallow = false) {
         } else if (key === ReactiveFlags.IS_READONLY) {
             return isReadOnly;
         }
-
         const res = Reflect.get(target, key);// 取值操作，类似 target.key
-
         if (shallow) {
             return res;
         }
-
         //看看 res 是不是 object 
         if (isObject(res)) {
-
             return isReadOnly ? readonly(res) : reactive(res)
         }
-
-
         if (!isReadOnly) {
-            /*
-                跟踪
-             */
-            //info 收集依赖
+            //info 收集依赖 跟踪
             track(target, key);
         }
         return res;
