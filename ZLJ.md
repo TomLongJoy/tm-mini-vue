@@ -12,3 +12,18 @@
 ```js 
     yarn build --watch
 ```
+
+
+```js
+
+
+     const vnode = {
+        type,
+        props,
+        children,
+        component: null,
+        key: props && props.key,
+        shapeFlag: getShapeFlag(type),
+        el: null,
+    };
+```

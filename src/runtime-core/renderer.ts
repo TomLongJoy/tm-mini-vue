@@ -1,3 +1,9 @@
+/*
+    todo : 生成js代码。
+    npm run build --watch 
+
+*/
+
 import { effect } from "../reactivity/effect";
 import { EMPTY_OBJ } from "../shared";
 import { ShapeFlags } from "../shared/ShapeFlags";
@@ -8,7 +14,7 @@ import { queueJobs } from "./scheduler";
 import { Fragment, Text } from "./vnode";
 
 export function createRender(options) {
-
+    debugger// 查看createElement 
     // 此处的方法 在  runtime-dom\index.ts 里面实现
     const {
         createElement: hostCreateElement,
@@ -49,6 +55,7 @@ export function createRender(options) {
                     processElement(n1, n2, container, parentComponent, anchor);
                     // STATEFUL_COMPONENT 
                 } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
+                    // todo 先进入这里
                     processComponent(n1, n2, container, parentComponent, anchor);
                 }
                 break;
@@ -297,7 +304,7 @@ export function createRender(options) {
     }
 
     function mountElement(vnode: any, container: any, parentComponent: any, anchor) {
-
+        debugger// vnode 是个什么
         // vnode -> element -> div
         const el = (vnode.el = hostCreateElement(vnode.type));
         const { children, shapeFlag } = vnode;
@@ -328,6 +335,7 @@ export function createRender(options) {
     function processComponent(n1, n2: any, container: any, parentComponent: any, anchor) {
 
         if (!n1) {
+            // 先创建
             mountComponent(n2, container, parentComponent, anchor)
         } else {
             updateComponent(n1, n2);
@@ -353,6 +361,24 @@ export function createRender(options) {
 
     function mountComponent(initialVNode: any, container: any, parentComponent: any, anchor) {
 
+        /*
+        
+            instance 就是 component实例对象，
+            const componet = {
+                vnode,
+                type: vnode.type,
+                next: null,
+                setupState: {},
+                props: {},
+                slots: {},
+                provides: parent ? parent.provides : {},
+                parent,
+                isMounted: false,
+                subTree: {},
+                emit: () => { }
+            };
+
+        */ 
         const instance = (initialVNode.component = createComponentInstance(initialVNode, parentComponent))
         setupComponent(instance);
         setupRenderEffect(instance, initialVNode, container, anchor);

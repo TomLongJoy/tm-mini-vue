@@ -17,16 +17,13 @@ export const PublicInstancePoxyHandlers = {
         }
         if (hasOwn(setupState, key)) {
             return setupState[key];
-
         } else if (hasOwn(props, key)) {
             return props[key];
         }
-
         // key -> $el
         // if (key === '$el') {
         //     return instance.vnode.el;
         // }
-
         const publicGetter = publicPropertiesMap[key];
         if (publicGetter) {
             return publicGetter(instance);
