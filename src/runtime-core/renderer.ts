@@ -14,10 +14,10 @@ import { queueJobs } from "./scheduler";
 import { Fragment, Text } from "./vnode";
 
 export function createRender(options) {
-    debugger// 查看createElement 
+    // 查看createElement 
     // 此处的方法 在  runtime-dom\index.ts 里面实现
     const {
-        createElement: hostCreateElement,
+        createElement: hostCreateElement, 
         patchProp: hostPatchProp,
         insert: hostInsert,
         remove: hostRemove,
@@ -361,26 +361,11 @@ export function createRender(options) {
 
     function mountComponent(initialVNode: any, container: any, parentComponent: any, anchor) {
 
-        /*
-        
-            instance 就是 component实例对象，
-            const componet = {
-                vnode,
-                type: vnode.type,
-                next: null,
-                setupState: {},
-                props: {},
-                slots: {},
-                provides: parent ? parent.provides : {},
-                parent,
-                isMounted: false,
-                subTree: {},
-                emit: () => { }
-            };
-
-        */ 
+        //1.创建instance
         const instance = (initialVNode.component = createComponentInstance(initialVNode, parentComponent))
+        //2.更新组件 有3个方法调用
         setupComponent(instance);
+        debugger //上面走完
         setupRenderEffect(instance, initialVNode, container, anchor);
     }
 
@@ -390,6 +375,9 @@ export function createRender(options) {
 
             if (!instance.isMounted) {
                 const { proxy } = instance;
+                //TODO 这个地方需要仔细研究
+                // 调用了 instance.runder函数。 
+                debugger
                 const subTree = (instance.subTree = instance.render.call(proxy, proxy));
                 // vnode  -> patch 
                 // vnode -> element -> 

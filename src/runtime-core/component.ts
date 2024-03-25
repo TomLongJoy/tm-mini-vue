@@ -23,15 +23,20 @@ export function createComponentInstance(vnode, parent) {
     return componet;
 }
 export function setupComponent(instance) {
+    // debugger // 这个地方逻辑卡住，需要继续研究
     // todo
+    //1
     initProps(instance, instance.vnode.props);
+    //2
     initSlots(instance, instance.vnode.children);
+    //3 -- 初始化有状态的component <组件>
     setupStatefulComponent(instance);
 
+    // 4 走完之后会进入到path
+    // debugger
 }
 function setupStatefulComponent(instance: any) {
     const component = instance.type;
-    // ctx <context>
     instance.proxy = new Proxy({ _: instance }, PublicInstancePoxyHandlers);
     const { setup } = component
     if (setup) {
