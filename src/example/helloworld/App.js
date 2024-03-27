@@ -11,7 +11,8 @@ export const App = {
             id:"root",
             class:["red","hard"],
         },
-        [h("p", { class:"red"},"hi"), h("p",{clsass:"blue"},"mini-vue")]
+        "hi," + this.msg,
+        // [h("p", { class:"red"},"hi"), h("p",{clsass:"blue"},"mini-vue")]
         );
     },
     setup(){
@@ -24,6 +25,8 @@ export const App = {
 // export const App = {
 //     // 必须要写ruender
 //     name: "App",
+
+    
 //     render() {
 //         window.self = this;
 //         return h(

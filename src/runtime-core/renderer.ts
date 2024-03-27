@@ -304,7 +304,7 @@ export function createRender(options) {
     }
 
     function mountElement(vnode: any, container: any, parentComponent: any, anchor) {
-        debugger// vnode 是个什么
+        // debugger// vnode 是个什么
         // vnode -> element -> div
         const el = (vnode.el = hostCreateElement(vnode.type));
         const { children, shapeFlag } = vnode;
@@ -319,6 +319,7 @@ export function createRender(options) {
         const { props } = vnode;
         for (const key in props) {
             const val = props[key];
+            console.log('输出的事件名称'+key);
             hostPatchProp(el, key, null, val);
         }
         // container.append(el)
@@ -365,7 +366,7 @@ export function createRender(options) {
         const instance = (initialVNode.component = createComponentInstance(initialVNode, parentComponent))
         //2.更新组件 有3个方法调用
         setupComponent(instance);
-        debugger //上面走完
+        // debugger //上面走完
         setupRenderEffect(instance, initialVNode, container, anchor);
     }
 
@@ -377,7 +378,6 @@ export function createRender(options) {
                 const { proxy } = instance;
                 //TODO 这个地方需要仔细研究
                 // 调用了 instance.runder函数。 
-                debugger
                 const subTree = (instance.subTree = instance.render.call(proxy, proxy));
                 // vnode  -> patch 
                 // vnode -> element -> 

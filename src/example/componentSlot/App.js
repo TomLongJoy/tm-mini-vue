@@ -7,7 +7,6 @@ export const App = {
     name: "App",
     render() {
         const app = h("div", {}, "App");
-
         // 数组  单值 
         // object key  
         const foo = h(Foo, {}, {
@@ -18,10 +17,8 @@ export const App = {
             footer: () => h("p", {}, "footer  ")
         });
         // const foo = h(Foo, {}, h("p", {}, "123"));
-
         return h("div", {}, [app, foo]);
     },
-
     setup() {
         return {};
     }

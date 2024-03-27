@@ -22,6 +22,6 @@ export const App = {
 
     setup() {
         return {
-        }
+        }    
     }
 }
