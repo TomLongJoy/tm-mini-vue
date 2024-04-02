@@ -7,11 +7,6 @@ function createElement(type: any) {
 }
 
 function patchProp(el, key, prevVal, nextVal) {
-    // console.log(key)
-    // 具体的 click -> 通用
-    // on + Event name
-    //onMousedown 
-    // debugger
     const isOn = (key: string) => /^on[A-Z]/.test(key);
     if (isOn(key)) {
         const event = key.slice(2).toLowerCase();

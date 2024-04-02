@@ -15,11 +15,11 @@ export function createAppApi(render) {
         */
         return {
             mount(rootContainer) { // div#app
-               //  rootComponent 就是 main.js 中App = { name:"", render(){}, setup(){}}。
-               debugger
-                const vnode = createVNode(rootComponent); 
+                //  rootComponent 就是 main.js 中App = { name:"", render(){}, setup(){}}。
+                debugger
+                const vnode = createVNode(rootComponent);
                 render(vnode, rootContainer); // renderer.ts 中的 render 函数.
-            } 
+            }
         }
     }
 }

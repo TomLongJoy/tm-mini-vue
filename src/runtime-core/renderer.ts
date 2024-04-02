@@ -14,26 +14,33 @@ import { queueJobs } from "./scheduler";
 import { Fragment, Text } from "./vnode";
 
 export function createRender(options) {
-    // 查看createElement 
-    // 此处的方法 在  runtime-dom\index.ts 里面实现
-    const {
-        createElement: hostCreateElement, 
+    /*    
+    const renderer: any = createRender({
+    createElement,
+    patchProp,
+    insert,
+    remove,
+    setElementText
+    })
+    */
+    const {//此处的方法 在  runtime-dom\index.ts 里面实现
+        createElement: hostCreateElement,
         patchProp: hostPatchProp,
         insert: hostInsert,
         remove: hostRemove,
         setElementText: hostSetElementText,
     } = options;
 
+    //0x000000
     function render(vnode, container) {
         // patch 
-        // 
         patch(null, vnode, container, null, null)
     }
 
     // n1 -> 老的
     //n2 -> 新的
+    //0x000001
     function patch(n1, n2, container, parentComponent: any, anchor: any) {
-
         // 去处理组件
         // 判断 是不是 element
         // todo 判断vnode 是不是一个element
@@ -51,18 +58,69 @@ export function createRender(options) {
                 processText(n1, n2, container);
                 break;
             default:
-                if (shapeFlag & ShapeFlags.ELEMENT) {
+                if (shapeFlag & ShapeFlags.ELEMENT) {// 
                     processElement(n1, n2, container, parentComponent, anchor);
-                    // STATEFUL_COMPONENT 
                 } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-                    // todo 先进入这里
+                    // todo 先处理组件
                     processComponent(n1, n2, container, parentComponent, anchor);
                 }
                 break;
         }
+    }
+    //0x000002
+    function processComponent(n1, n2: any, container: any, parentComponent: any, anchor) {
+        if (!n1) {
+            // 先创建
+            mountComponent(n2, container, parentComponent, anchor)
+        } else {
+            updateComponent(n1, n2);
+        }
+    }
+    // 0x000003
+    function mountComponent(initialVNode: any, container: any, parentComponent: any, anchor) {
 
+        //1.创建instance
+        const instance = (initialVNode.component = createComponentInstance(initialVNode, parentComponent))
+        //2.更新组件 有3个方法调用
+        setupComponent(instance);
+        setupRenderEffect(instance, initialVNode, container, anchor);
+    }
+    // 0x000004
+    function setupRenderEffect(instance: any, initialVNode, container: any, anchor) {
+        instance.update = effect(() => {
+            if (!instance.isMounted) {
+                const { proxy } = instance;
+                // 根据instance 调用 render函数，生成虚拟节点树。
+                const subTree = (instance.subTree = instance.render.call(proxy, proxy));// instance.render 就是App.js 中render 函数。
+                patch(null, subTree, container, instance, anchor);
+                /*
+                    subTree.el代表的是什么。 
+                */    
+                initialVNode.el = subTree.el// 2024-03-28  <23-实现组件代理对象，需要再加深>
+                instance.isMounted = true;
+            } else {
+                console.log("update");
+                //需要一个 vnode 
+                const { next, vnode, } = instance;
+                if (next) {
+                    next.el = vnode.el;
+                    updateComponentPreRender(instance, next)
+                }
+                const { proxy } = instance;
+                const subTree = instance.render.call(proxy, proxy);
+                const prevSubTree = instance.subTree;
+                instance.subTree = subTree;
+                patch(prevSubTree, subTree, container, instance, anchor);
+            }
+        }, {
+            scheduler() {
+                // console.log("update - scheduler ")
+                queueJobs(instance.update);
+            }
+        })
     }
 
+    //0x000005
     function processElement(n1, n2: any, container: any, parentComponent: any, anchor) {
         if (!n1) {
             //init -> update
@@ -70,6 +128,43 @@ export function createRender(options) {
         } else {
             // debugger
             patchElement(n1, n2, container, parentComponent, anchor);
+        }
+    }
+
+    //0x000006
+    function mountElement(vnode: any, container: any, parentComponent: any, anchor) {
+        // vnode -> element -> div
+        const el = (vnode.el = hostCreateElement(vnode.type));
+        const { children, shapeFlag } = vnode;
+        if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
+            el.textContent = children;
+        } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {  // array_children 
+            mountChildren(vnode.children, el, parentComponent, anchor) // container 应该是el
+        }
+        // props 
+        const { props } = vnode;
+        for (const key in props) {
+            const val = props[key];
+            // console.log('输出的事件名称' + key);
+            hostPatchProp(el, key, null, val);
+        }
+        // container.append(el)
+        hostInsert(el, container, anchor);
+    }
+
+    //0x000007
+    function mountChildren(children, container, parentComponent: any, anchor) {
+        children.forEach((v) => {
+            patch(null, v, container, parentComponent, anchor)
+        })
+    }
+
+
+    function unmountChildren(children: any) {
+        for (let i = 0; i < children.length; i++) {
+            const el = children[i].el;
+            //同 insert 一样
+            hostRemove(el);
         }
     }
 
@@ -266,20 +361,7 @@ export function createRender(options) {
         }
     }
 
-    function unmountChildren(children: any) {
-
-        for (let i = 0; i < children.length; i++) {
-            const el = children[i].el;
-            //remove 
-            // 同  insert 一样
-
-            hostRemove(el);
-
-        }
-    }
-
     function patchProps(el, oldProps: any, newProps: any) {
-
         if (oldProps !== newProps) {
             for (const key in newProps) {
                 const prevProp = oldProps[key];
@@ -288,61 +370,15 @@ export function createRender(options) {
                     hostPatchProp(el, key, prevProp, nextProp);
                 }
             }
-
             if (oldProps !== EMPTY_OBJ) {
                 for (const key in oldProps) {
                     if (!(key in newProps)) {
                         hostPatchProp(el, key, oldProps[key], null);
-
                     }
                 }
             }
-
         }
-
-
-    }
-
-    function mountElement(vnode: any, container: any, parentComponent: any, anchor) {
-        // debugger// vnode 是个什么
-        // vnode -> element -> div
-        const el = (vnode.el = hostCreateElement(vnode.type));
-        const { children, shapeFlag } = vnode;
-        if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
-            el.textContent = children;
-        } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
-            // array_children 
-            // vnode 
-            mountChildren(vnode.children, el, parentComponent, anchor) // container 应该是el
-        }
-        // props 
-        const { props } = vnode;
-        for (const key in props) {
-            const val = props[key];
-            console.log('输出的事件名称'+key);
-            hostPatchProp(el, key, null, val);
-        }
-        // container.append(el)
-        hostInsert(el, container, anchor);
-    }
-
-    function mountChildren(children, container, parentComponent: any, anchor) {
-
-        children.forEach((v) => {
-            patch(null, v, container, parentComponent, anchor)
-        })
-    }
-
-    function processComponent(n1, n2: any, container: any, parentComponent: any, anchor) {
-
-        if (!n1) {
-            // 先创建
-            mountComponent(n2, container, parentComponent, anchor)
-        } else {
-            updateComponent(n1, n2);
-        }
-    }
-
+    }   
     function updateComponent(n1: any, n2: any) {
         const instance = (n2.component = n1.component);
 
@@ -357,59 +393,6 @@ export function createRender(options) {
 
 
     }
-
-
-
-    function mountComponent(initialVNode: any, container: any, parentComponent: any, anchor) {
-
-        //1.创建instance
-        const instance = (initialVNode.component = createComponentInstance(initialVNode, parentComponent))
-        //2.更新组件 有3个方法调用
-        setupComponent(instance);
-        // debugger //上面走完
-        setupRenderEffect(instance, initialVNode, container, anchor);
-    }
-
-    function setupRenderEffect(instance: any, initialVNode, container: any, anchor) {
-
-        instance.update = effect(() => {
-
-            if (!instance.isMounted) {
-                const { proxy } = instance;
-                //TODO 这个地方需要仔细研究
-                // 调用了 instance.runder函数。 
-                const subTree = (instance.subTree = instance.render.call(proxy, proxy));
-                // vnode  -> patch 
-                // vnode -> element -> 
-                patch(null, subTree, container, instance, anchor);
-                // element -> mount         // 
-                initialVNode.el = subTree.el
-                instance.isMounted = true;
-            } else {
-
-                console.log("update");
-                //需要一个 vnode 
-                const { next, vnode, } = instance;
-                if (next) {
-                    next.el = vnode.el;
-                    updateComponentPreRender(instance, next)
-                }
-
-                const { proxy } = instance;
-                const subTree = instance.render.call(proxy, proxy);
-                const prevSubTree = instance.subTree;
-                instance.subTree = subTree;
-                patch(prevSubTree, subTree, container, instance, anchor);
-            }
-        }, {
-            scheduler() {
-                console.log("update - scheduler ")
-
-                queueJobs(instance.update);
-            }
-        })
-    }
-
 
     function processFragment(n1, n2: any, container: any, parentComponent: any, anchor) {
         // implement 

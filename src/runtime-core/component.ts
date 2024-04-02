@@ -31,9 +31,7 @@ export function setupComponent(instance) {
     initSlots(instance, instance.vnode.children);
     //3 -- 初始化有状态的component <组件>
     setupStatefulComponent(instance);
-
     // 4 走完之后会进入到path
-    // debugger
 }
 function setupStatefulComponent(instance: any) {
     const component = instance.type;
@@ -43,9 +41,10 @@ function setupStatefulComponent(instance: any) {
         // currentInstance = instance;
         setCurrentInstance(instance);
         // function Object 
-        const setupResult = setup(shallowReadonly(instance.props), {
-            emit: instance.emit
-        });
+        const setupResult = setup(
+            shallowReadonly(instance.props),
+            { emit: instance.emit }
+        );
         setCurrentInstance(null);
         handleSetupResult(instance, setupResult);
     }
@@ -65,7 +64,7 @@ function finishComponentSetup(instance: any) {
             Component.render = compiler(Component.template)
         }
     }
-    instance.render = Component.render;   
+    instance.render = Component.render;
 }
 let currentInstance = null;
 export function getCurrentInstance() {
