@@ -36,11 +36,19 @@ export function setupComponent(instance) {
 function setupStatefulComponent(instance: any) {
     const component = instance.type;
     instance.proxy = new Proxy({ _: instance }, PublicInstancePoxyHandlers);
+    // instance.proxy = new Proxy( {} , {
+    //     get( target, key){
+    //         const { setupState } = instance;
+    //         console.log(setupState);
+    //         debugger
+    //     }
+    // })
+    // instance.proxy.msg;
+
     const { setup } = component
     if (setup) {
-        // currentInstance = instance;
         setCurrentInstance(instance);
-        // function Object 
+        debugger// 调用foot setup
         const setupResult = setup(
             shallowReadonly(instance.props),
             { emit: instance.emit }

@@ -2,7 +2,36 @@ import { Car } from "../test-class";
 
 describe("reactive", () => {
 
-    it.only('objcet', () => {
+    it.only('test proxy 1', () => {
+
+        const setupState = {
+            msg:"hi,mini-vue"
+        }
+        const proxy = new Proxy(setupState, { 
+            get(target,key){
+                debugger
+            }
+        })
+        const msg = proxy.msg;
+        console.log(msg);
+        expect(msg).toBe("hi,mini-vue")
+    })
+
+    it.only('test proxy 2 ', () => {
+        const setupState:any = {  }
+        const proxy = new Proxy(setupState, { 
+            get(target,key){
+                debugger
+            }
+        })
+                    const msg = proxy.msg;
+        console.log(msg);
+        expect(msg).toBe("hi,mini-vue")
+    })
+
+
+
+    it('objcet', () => {
 
         var obj1: any = {}
         var obj2: any = obj1;

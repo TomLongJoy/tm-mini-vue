@@ -9,7 +9,7 @@ const publicPropertiesMap = {
 
 export const PublicInstancePoxyHandlers = {
     get({ _: instance }, key) {
-        debugger
+        // debugger
         const { setupState, props } = instance;
         if (key in setupState) {
             return setupState[key];

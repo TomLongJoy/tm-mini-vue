@@ -35,7 +35,7 @@ export function isProxy(value) {
 function createActiveObject(target: any, baseHandlers) {
     if (!isObject(target)) {
         console.warn(`target ${target} 必须是一个对象`);
-        return;
+        return target;
     }
     return new Proxy(target, baseHandlers);
 }

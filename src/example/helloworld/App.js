@@ -5,25 +5,20 @@ import { Foo } from "./Foo.js";
 window.self = null;
 
 // export const App = {
-//     render(){
+//     render() {
 //         window.self = this;// 调试 $el
 //         return h(
 //             "div",
 //             {
-//                 id:"root",
-//                 class:["red","hard"],
+//                 id: "root",
+//                 class: ["red", "hard"],
 //             },
-//             // 'hi,mini-vue' // 第一步
 //             "hi," + this.msg, //第二步
-//             // [
-//             //     h("p", { class:"red"},"hi"), 
-//             //     h("p",{class:"blue"},"mini-vue")
-//             // ] // 第三步
 //         );
 //     },
-//     setup(){
+//     setup() {
 //         return {
-//             msg:'mini-vue'
+//             msg: 'mini-vue'
 //         }
 //     }
 // }

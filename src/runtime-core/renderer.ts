@@ -32,7 +32,7 @@ export function createRender(options) {
     } = options;
 
     //0x000000
-    function render(vnode, container) {
+    function render(vnode, container) {  
         // patch 
         patch(null, vnode, container, null, null)
     }
@@ -41,15 +41,8 @@ export function createRender(options) {
     //n2 -> 新的
     //0x000001
     function patch(n1, n2, container, parentComponent: any, anchor: any) {
-        // 去处理组件
-        // 判断 是不是 element
-        // todo 判断vnode 是不是一个element
-        // 思考题：如何区分是 element / component 类型
-        // ShapeFlags
-        // vnode -> flag
-        // element 
+
         const { type, shapeFlag } = n2;
-        // Fragment -> children
         switch (type) {
             case Fragment:
                 processFragment(n1, n2, container, parentComponent, anchor);
@@ -60,8 +53,7 @@ export function createRender(options) {
             default:
                 if (shapeFlag & ShapeFlags.ELEMENT) {// 
                     processElement(n1, n2, container, parentComponent, anchor);
-                } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-                    // todo 先处理组件
+                } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {// todo 先处理组件                    
                     processComponent(n1, n2, container, parentComponent, anchor);
                 }
                 break;
@@ -91,11 +83,10 @@ export function createRender(options) {
             if (!instance.isMounted) {
                 const { proxy } = instance;
                 // 根据instance 调用 render函数，生成虚拟节点树。
+                debugger
                 const subTree = (instance.subTree = instance.render.call(proxy, proxy));// instance.render 就是App.js 中render 函数。
                 patch(null, subTree, container, instance, anchor);
-                /*
-                    subTree.el代表的是什么。 
-                */    
+                // debugger
                 initialVNode.el = subTree.el// 2024-03-28  <23-实现组件代理对象，需要再加深>
                 instance.isMounted = true;
             } else {
@@ -120,10 +111,9 @@ export function createRender(options) {
         })
     }
 
-    //0x000005
-    function processElement(n1, n2: any, container: any, parentComponent: any, anchor) {
+    //0x000005            
+    function processElement(n1, n2: any, container: any, parentComponent: any, anchor) {//init -> update
         if (!n1) {
-            //init -> update
             mountElement(n2, container, parentComponent, anchor)
         } else {
             // debugger
@@ -134,6 +124,7 @@ export function createRender(options) {
     //0x000006
     function mountElement(vnode: any, container: any, parentComponent: any, anchor) {
         // vnode -> element -> div
+        // debugger
         const el = (vnode.el = hostCreateElement(vnode.type));
         const { children, shapeFlag } = vnode;
         if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
@@ -378,7 +369,7 @@ export function createRender(options) {
                 }
             }
         }
-    }   
+    }
     function updateComponent(n1: any, n2: any) {
         const instance = (n2.component = n1.component);
 
