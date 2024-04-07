@@ -19,8 +19,6 @@ function patchProp(el, key, prevVal, nextVal) {
             // 2024-01-26 已经明白
             el.setAttribute(key, nextVal);
         }
-
-
     }
 }
 

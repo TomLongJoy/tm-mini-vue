@@ -7,16 +7,17 @@ export const App = {
     name: "App",
     render() {
         const app = h("div", {}, "App");
-        // 数组  单值 
-        // object key  
-        const foo = h(Foo, {}, {
-            // element -> text 
-            header: ({ age }) => [h("p", {}, "header" + age),
-            createTextVNode("你好呀")
-            ],
-            footer: () => h("p", {}, "footer  ")
-        });
-        // const foo = h(Foo, {}, h("p", {}, "123"));
+
+        const foo = h(
+            Foo,
+            {},
+            {
+                header: ({ age }) => [h("p", {}, "header" + age),
+                createTextVNode("你好呀")
+                ],
+                footer: () => h("p", {}, "footer  ")
+            }
+        );
         return h("div", {}, [app, foo]);
     },
     setup() {

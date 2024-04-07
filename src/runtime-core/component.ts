@@ -48,7 +48,7 @@ function setupStatefulComponent(instance: any) {
     const { setup } = component
     if (setup) {
         setCurrentInstance(instance);
-        debugger// 调用foot setup
+        // debugger// 调用foot setup
         const setupResult = setup(
             shallowReadonly(instance.props),
             { emit: instance.emit }

@@ -83,7 +83,7 @@ export function createRender(options) {
             if (!instance.isMounted) {
                 const { proxy } = instance;
                 // 根据instance 调用 render函数，生成虚拟节点树。
-                debugger
+                // debugger
                 const subTree = (instance.subTree = instance.render.call(proxy, proxy));// instance.render 就是App.js 中render 函数。
                 patch(null, subTree, container, instance, anchor);
                 // debugger
@@ -136,8 +136,8 @@ export function createRender(options) {
         const { props } = vnode;
         for (const key in props) {
             const val = props[key];
-            // console.log('输出的事件名称' + key);
-            hostPatchProp(el, key, null, val);
+            console.log('输出的事件名称' + key);
+            hostPatchProp(el, key, null, val); // runtime-dom\index.ts  -patchProp()
         }
         // container.append(el)
         hostInsert(el, container, anchor);
