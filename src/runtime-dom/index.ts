@@ -15,8 +15,6 @@ function patchProp(el, key, prevVal, nextVal) {
         if (nextVal === undefined || nextVal === null) {
             el.removeAttribute(key)
         } else {
-            // todo setAttribute 需要了解下
-            // 2024-01-26 已经明白
             el.setAttribute(key, nextVal);
         }
     }

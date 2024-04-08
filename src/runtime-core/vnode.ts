@@ -11,7 +11,7 @@ export { createVNode as createElementVNode }
  */
 export function createVNode(type, props?, children?) {
     const vnode = {
-        type,
+        type,// string <元素> 或者 object <组件>
         props,
         children,
         component: null,
@@ -21,6 +21,7 @@ export function createVNode(type, props?, children?) {
     }
     if (typeof children === 'string') {
         vnode.shapeFlag |= ShapeFlags.TEXT_CHILDREN;
+       
     } else if (Array.isArray(children)) {
         vnode.shapeFlag |= ShapeFlags.ARRAY_CHILDREN;
     }
@@ -30,6 +31,12 @@ export function createVNode(type, props?, children?) {
             vnode.shapeFlag |= ShapeFlags.SLOT_CHILDREN; // zlj 是个地方写错，导致报错
         }
     }
+    if(vnode.shapeFlag & ShapeFlags.ELEMENT){
+        console.log(`创建element元素 type:${type} -- ${JSON.stringify(props)}`)
+    }else if(vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT){
+        console.log(`创建component组件type.name=${type.name}`)
+    }
+    // debugger
     return vnode;
 }
 

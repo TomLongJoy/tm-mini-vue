@@ -1,15 +1,12 @@
-
-
 import { h } from "../../../lib/guide-mini-vue.esm.js";
 export const Foo = {
+    name:"foo",
     setup(props) {
-        //props.count
-        console.log(props);
-        //3.
-        // readonly 
+        // console.log(props);
+        debugger
     },
-
     render() {
-        return h('div', {}, "foo:" + this.count);
+        debugger
+        return h('span', {id:"foo"}, "foo:" + this.count);
     }
 }

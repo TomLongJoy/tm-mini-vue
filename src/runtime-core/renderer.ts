@@ -37,11 +37,9 @@ export function createRender(options) {
         patch(null, vnode, container, null, null)
     }
 
-    // n1 -> 老的
-    //n2 -> 新的
+    // n1 -> 老的 //n2 -> 新的
     //0x000001
     function patch(n1, n2, container, parentComponent: any, anchor: any) {
-
         const { type, shapeFlag } = n2;
         switch (type) {
             case Fragment:
@@ -53,7 +51,7 @@ export function createRender(options) {
             default:
                 if (shapeFlag & ShapeFlags.ELEMENT) {// 
                     processElement(n1, n2, container, parentComponent, anchor);
-                } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {// todo 先处理组件                    
+                } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {// todo 先处理组件
                     processComponent(n1, n2, container, parentComponent, anchor);
                 }
                 break;
@@ -98,9 +96,9 @@ export function createRender(options) {
                     updateComponentPreRender(instance, next)
                 }
                 const { proxy } = instance;
-                const subTree = instance.render.call(proxy, proxy);
-                const prevSubTree = instance.subTree;
-                instance.subTree = subTree;
+                const subTree = instance.render.call(proxy, proxy);// 当前的subtree
+                const prevSubTree = instance.subTree;// 上一次的subtree
+                instance.subTree = subTree;// 更新, 下次使用的subtree
                 patch(prevSubTree, subTree, container, instance, anchor);
             }
         }, {
@@ -116,7 +114,6 @@ export function createRender(options) {
         if (!n1) {
             mountElement(n2, container, parentComponent, anchor)
         } else {
-            // debugger
             patchElement(n1, n2, container, parentComponent, anchor);
         }
     }
@@ -136,7 +133,6 @@ export function createRender(options) {
         const { props } = vnode;
         for (const key in props) {
             const val = props[key];
-            console.log('输出的事件名称' + key);
             hostPatchProp(el, key, null, val); // runtime-dom\index.ts  -patchProp()
         }
         // container.append(el)
@@ -167,7 +163,24 @@ export function createRender(options) {
         patchChildren(n1, n2, el, parentComponent, anchor);
         patchProps(el, oldProps, newProps);
     }
-
+    function patchProps(el, oldProps: any, newProps: any) {
+        if (oldProps !== newProps) {
+            for (const key in newProps) {
+                const prevProp = oldProps[key];
+                const nextProp = newProps[key];
+                if (prevProp !== nextProp) {
+                    hostPatchProp(el, key, prevProp, nextProp);
+                }
+            }
+            if (oldProps !== EMPTY_OBJ) {
+                for (const key in oldProps) {
+                    if (!(key in newProps)) {
+                        hostPatchProp(el, key, oldProps[key], null);
+                    }
+                }
+            }
+        }
+    }
     function patchChildren(n1: any, n2: any, container: any, parentComponent: any, anchor) {
 
         const prevShapeFlag = n1.shapeFlag;
@@ -352,24 +365,7 @@ export function createRender(options) {
         }
     }
 
-    function patchProps(el, oldProps: any, newProps: any) {
-        if (oldProps !== newProps) {
-            for (const key in newProps) {
-                const prevProp = oldProps[key];
-                const nextProp = newProps[key];
-                if (prevProp !== nextProp) {
-                    hostPatchProp(el, key, prevProp, nextProp);
-                }
-            }
-            if (oldProps !== EMPTY_OBJ) {
-                for (const key in oldProps) {
-                    if (!(key in newProps)) {
-                        hostPatchProp(el, key, oldProps[key], null);
-                    }
-                }
-            }
-        }
-    }
+   
     function updateComponent(n1: any, n2: any) {
         const instance = (n2.component = n1.component);
 

@@ -23,6 +23,7 @@ export function createComponentInstance(vnode, parent) {
     return componet;
 }
 export function setupComponent(instance) {
+    debugger
     // debugger // 这个地方逻辑卡住，需要继续研究
     // todo
     //1
@@ -34,6 +35,7 @@ export function setupComponent(instance) {
     // 4 走完之后会进入到path
 }
 function setupStatefulComponent(instance: any) {
+    // TODO：component组件，其实就是，app.js中 App对象。
     const component = instance.type;
     instance.proxy = new Proxy({ _: instance }, PublicInstancePoxyHandlers);
     // instance.proxy = new Proxy( {} , {
@@ -58,8 +60,7 @@ function setupStatefulComponent(instance: any) {
     }
 }
 function handleSetupResult(instance, setupResult: any) {
-    // function Object 
-    // todo function 
+    
     if (typeof setupResult === "object") {
         instance.setupState = proxyRefs(setupResult);
     }
