@@ -76,7 +76,7 @@ export function createRender(options) {
         setupRenderEffect(instance, initialVNode, container, anchor);
     }
     // 0x000004
-    function setupRenderEffect(instance: any, initialVNode, container: any, anchor) {
+    function setupRenderEffect(instance: any, initialVNode, container: any, anchor) { 
         instance.update = effect(() => {
             if (!instance.isMounted) {
                 const { proxy } = instance;
@@ -214,22 +214,17 @@ export function createRender(options) {
     function patchKeyedChildren(c1: any, c2: any, container, parentComponent, parentAnchor) {
 
         const l2 = c2.length;
-
         let i = 0;
-        let e1 = c1.length - 1;
-        let e2 = l2 - 1;
-
+        let e1 = c1.length - 1;//老
+        let e2 = l2 - 1;//新
         function isSomeVNodeType(n1, n2) {
-            //type 
-            //key 
+            //type  //key 
             return n1.type === n2.type && n1.key === n2.key;
         }
-
         //左侧
         while (i <= e1 && i <= e2) {
             const n1 = c1[i]
             const n2 = c2[i]
-
             if (isSomeVNodeType(n1, n2)) {
                 patch(n1, n2, container, parentComponent, parentAnchor)
             } else {
@@ -237,18 +232,15 @@ export function createRender(options) {
             }
             i++;
         }
-
         //右侧
         while (i <= e1 && i <= e2) {
             const n1 = c1[e1];
             const n2 = c2[e2];
-
             if (isSomeVNodeType(n1, n2)) {
                 patch(n1, n2, container, parentComponent, parentAnchor);
             } else {
                 break;
             }
-
             e1--;
             e2--;
         }
@@ -256,57 +248,40 @@ export function createRender(options) {
         //3. 新的比老的多，创建
         if (i > e1) {
             if (i <= e2) {
-
                 const nextPos = e2 + 1;
                 const anchor = nextPos < l2 ? c2[nextPos].el : null;
-
                 while (i <= e2) {
                     patch(null, c2[i], container, parentComponent, anchor)
                     i++;
                 }
-
             }
         } else if (i >= e2) {
             while (i <= e1) {
                 hostRemove(c1[i].el);
                 i++;
             }
-
         } else {
             //todo 乱序的部分
-
             //中间对比
-            let s1 = i;
+            let s1 = i;//老节点开始
             let s2 = i;
-
-            const tobePatched = e2 - s2 + 1;
+            const tobePatched = e2 - s2 + 1;// 新接口右侧 e2 - 左侧索引 s2   结果需要+1；长度
             let patched = 0;
             const keyToNewIndexMap = new Map();
             const newIndexToOldIndexMap = new Array(tobePatched);
-
             let moved = false;
             let maxNewIndexSoFar = 0;
-
-
             newIndexToOldIndexMap[i] = 0;
             for (let i = 0; i < tobePatched; i++) {
                 newIndexToOldIndexMap[i] = 0;
             }
-
-
             for (let i = s2; i <= e2; i++) {
                 const nextChild = c2[i];
                 keyToNewIndexMap.set(nextChild.key, i);
             }
-
-
-
             // null undefined 
-
-
             for (let i = s1; i <= e1; i++) {
                 const prevChild = c1[i];
-
                 if (patched >= tobePatched) {
                     hostRemove(prevChild.el)
                     continue;
@@ -322,11 +297,9 @@ export function createRender(options) {
                         }
                     }
                 }
-
                 if (newIndex === undefined) {
                     hostRemove(prevChild.el)
                 } else {
-
                     if (newIndex >= maxNewIndexSoFar) {
                         maxNewIndexSoFar = newIndex;
                     } else {
@@ -337,48 +310,35 @@ export function createRender(options) {
                     patched++;
                 }
             }
-
+            // 最长递增子序列
             const increasingNewIndexSequence = moved ? getSequence(newIndexToOldIndexMap) : [];
-
             let j = increasingNewIndexSequence.length - 1;
             for (let i = (tobePatched - 1); i >= 0; i--) {
-
                 const nextindex = i + s2;
                 const nextChild = c2[nextindex];
                 const anchor = nextindex + 1 < l2 ? c2[nextindex + 1].el : null;
-
                 if (newIndexToOldIndexMap[i] === 0) {
                     patch(null, nextChild, container, parentComponent, anchor);
                 } else if (moved) {
                     if (j < 0 || i !== increasingNewIndexSequence[j]) {
                         console.log("移动位置")
-
                         hostInsert(nextChild.el, container, anchor);
                     } else {
                         j--;
                     }
                 }
-
-
-
             }
         }
     }
-
-   
     function updateComponent(n1: any, n2: any) {
         const instance = (n2.component = n1.component);
-
         if (shouldUpdateComponent(n1, n2)) {
             instance.next = n2;
             instance.update();
         } else {
-
             n2.el = n1.el;
             instance.vnode = n2;
         }
-
-
     }
 
     function processFragment(n1, n2: any, container: any, parentComponent: any, anchor) {
@@ -395,14 +355,10 @@ export function createRender(options) {
     return {
         createApp: createAppApi(render)
     }
-
 }
-
 function updateComponentPreRender(instance: any, nextVNode: any) {
-
     instance.vnode = nextVNode;
     instance.next = null;
-
     instance.props = nextVNode.props;
 }
 
