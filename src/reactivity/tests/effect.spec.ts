@@ -11,8 +11,7 @@ describe("happy path ", () => {
         effect(() => {
             nextAge = user.age + 1;
         })
-        expect(nextAge).toBe(11);
-        // update 
+        expect(nextAge).toBe(11); 
         user.age++;
         expect(nextAge).toBe(12);
     })

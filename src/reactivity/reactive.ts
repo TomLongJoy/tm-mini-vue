@@ -37,6 +37,6 @@ function createActiveObject(target: any, baseHandlers) {
         console.warn(`target ${target} 必须是一个对象`);
         return target;
     }
-    return new Proxy(target, baseHandlers);
+    return new Proxy(target, baseHandlers);// tsconfig.json  lib处理。
 }
 
