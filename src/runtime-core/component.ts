@@ -1,5 +1,6 @@
 import { proxyRefs } from "../reactivity";
 import { shallowReadonly } from "../reactivity/reactive";
+import { hasOwn } from "../shared";
 import { emit } from "./componentEmit";
 import { initProps } from "./componentProps";
 import { PublicInstancePoxyHandlers } from "./componentPublicInstance";
@@ -23,9 +24,6 @@ export function createComponentInstance(vnode, parent) {
     return componet;
 }
 export function setupComponent(instance) {
-    debugger
-    // debugger // 这个地方逻辑卡住，需要继续研究
-    // todo
     //1
     initProps(instance, instance.vnode.props);
     //2
@@ -37,30 +35,19 @@ export function setupComponent(instance) {
 function setupStatefulComponent(instance: any) {
     // TODO：component组件，其实就是，app.js中 App对象。
     const component = instance.type;
+    console.log("componetn的name:"+component.name)
     instance.proxy = new Proxy({ _: instance }, PublicInstancePoxyHandlers);
-    // instance.proxy = new Proxy( {} , {
-    //     get( target, key){
-    //         const { setupState } = instance;
-    //         console.log(setupState);
-    //         debugger
-    //     }
-    // })
-    // instance.proxy.msg;
-
     const { setup } = component
     if (setup) {
         setCurrentInstance(instance);
-        // debugger// 调用foot setup
-        const setupResult = setup(
-            shallowReadonly(instance.props),
-            { emit: instance.emit }
-        );
+        const propsTem = shallowReadonly(instance.props);// 在initProps 处理。
+        debugger// setup返回值
+        const setupResult = setup(propsTem, { emit: instance.emit });
         setCurrentInstance(null);
         handleSetupResult(instance, setupResult);
     }
 }
 function handleSetupResult(instance, setupResult: any) {
-    
     if (typeof setupResult === "object") {
         instance.setupState = proxyRefs(setupResult);
     }

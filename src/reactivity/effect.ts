@@ -1,12 +1,12 @@
 import { extend } from "../shared";
 
 let activeEffect: any;
-let shouldTrack: any; // 是否需要收集
+let shouldTrack: any; // 是否需要收集 stop测试时候 ++ 问题。
 
 export class ReactiveEffect {
     private _fn: any;
     deps = [];
-    active = true;
+    active = true;// 判断是否有onStop
     onStop?: () => void;
     public scheduler: Function | undefined;// scheduler (调度器)
     constructor(fn: any, public _scheduler?: Function) {
@@ -46,7 +46,10 @@ function cleanupEffect(effect: any) {
 
 //todo -- 收集依赖 06视频 14:30
 const targetMap = new Map();
-export function track(target: any, key: any) {
+export function track(target: any, key: any) {    
+    if(!activeEffect){
+        debugger
+    }
     if (!isTracking()) return;
     // target -> key -> dep
     let depsMap = targetMap.get(target);
@@ -60,16 +63,14 @@ export function track(target: any, key: any) {
         depsMap.set(key, dep)
     }
     trackEffects(dep);
+    console.log('收集依赖-end')
 }
 
 export function trackEffects(dep) {
     //看看 dep 之前有没有添加过，添加过的话 那么就不添加了
     if (dep.has(activeEffect)) return;
     dep.add(activeEffect)
-    // todo 这个是什么意思  对应的 cleanupEffect()方法 里面有删除操作。 https://www.zhihu.com/question/439459521
-    //https://www.zhihu.com/question/439459521
-    //https://zhuanlan.zhihu.com/p/576055727
-    activeEffect.deps.push(dep); // 反向搜集
+    activeEffect.deps.push(dep); // 反向搜集   
 }
 
 export function isTracking() { // 12集，10：45创建。  zlj 16集，10：12 有使用
@@ -95,6 +96,19 @@ export function triggerEffects(dep) {
     }
 }
 
+// 创建effect,执行run()方法，runner.effect绑定。
+export function effect(fn: any, options: any = {}) {
+    const _effect = new ReactiveEffect(fn, options.scheduler);
+    extend(_effect, options) // export const extend = Object.assign;
+    _effect.run();// run中的this就是 _effect
+    const runner: any = _effect.run.bind(_effect);
+    runner.effect = _effect; // 这里忘记写，报错了。 
+    return runner;//bind -- learn 2 
+}
+export function stop(runner: any) {
+    runner.effect.stop();
+}
+
 // _effect.onStop = options.onStop;
 //options 
 // Object.assign() 静态方法将一个或者多个源对象中所有可枚举的自有属性复制到目标对象，并返回修改后的目标对象。
@@ -117,14 +131,26 @@ export function triggerEffects(dep) {
    runner是个函数，怎么能 .effect
    https://juejin.cn/post/7076967942079905806 
 */
-export function effect(fn: any, options: any = {}) {
-    const _effect = new ReactiveEffect(fn, options.scheduler);
-    extend(_effect, options) // export const extend = Object.assign;
-    _effect.run();
-    const runner: any = _effect.run.bind(_effect);
-    runner.effect = _effect; // 这里忘记写，报错了。 
-    return runner;//bind -- learn 2 
-}
-export function stop(runner: any) {
-    runner.effect.stop();
-}
+
+
+
+
+ // // start --- test 
+    // let count = 0;
+    // if( activeEffect.deps.length ){
+    //     testMethod(activeEffect);
+    // }
+    // function testMethod(activeEffect){
+    //     const dep = activeEffect.deps[0]
+    //     for (const effect of dep) {            
+    //         count++;
+    //         if(count > 1000){
+    //             debugger
+    //             console.log('循环结束')
+    //             return;
+    //         }
+    //         testMethod(effect);
+            
+    //     }
+    // }
+    // // end -- test 

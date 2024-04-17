@@ -2,12 +2,11 @@ import { hasChanged, isObject } from "../shared";
 import { isTracking, trackEffects, triggerEffects } from "./effect";
 import { reactive } from "./reactive";
 
-class RefImpl {
+class RefImpl {// impl 接口缩写
     private _value: any;
     public dep;
     private _rawValue: any;
     public __v_isRef = true;
-
     constructor(value) {
         this._rawValue = value;
         this._value = convert(value);
@@ -15,22 +14,19 @@ class RefImpl {
         // 1. 看看value 是不是对象 
         this.dep = new Set();
     }
-
     get value() {
-        trackRefValue(this)
+        trackRefValue(this);//收集依赖
         return this._value;
     }
-
     set value(newValue) {
         //一定是先去修改了 value值，
-
         // newValue -> this._value
         //hasChanged
         // 对比的时候 object 
         if (hasChanged(newValue, this._rawValue)) {
             this._rawValue = newValue;
             this._value = convert(newValue);
-            triggerEffects(this.dep)
+            triggerEffects(this.dep);//触发依赖
         };
     }
 }

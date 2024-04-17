@@ -35,7 +35,7 @@ function createGetter(isReadOnly = false, shallow = false) {
 
 function createSetter() {
     return function set(target: object, key: any, value: any) {
-        debugger
+        // debugger
         //Reflect.set方法设置target对象的name属性等于value。
         const res = Reflect.set(target, key, value);
         /*
@@ -60,7 +60,7 @@ export const readonlyHandlers = {
         return true;
     }
 }
-
+// extend 看 reactive.ts 中的底部注释
 export const shallowReadonlyHandlers = extend({}, readonlyHandlers, {
     get: shallowReadonlyGet
 })  

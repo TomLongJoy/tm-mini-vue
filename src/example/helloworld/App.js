@@ -3,7 +3,7 @@ import { h } from "../../../lib/guide-mini-vue.esm.js";
 import { Foo } from "./Foo.js";
 
 window.self = null;
-export const App = { // 必须要写ruender
+export const App = { // 必须要写render
     name: "App",
     // .vue 
     // <template></template> 转为 render函数 
@@ -24,7 +24,11 @@ export const App = { // 必须要写ruender
             },
             [
                 // h("p", {}, "hi," + this.msg),//第一步
-                h(Foo, { count: 1, })//第二步
+                /*
+                
+                Foo = {name:"foo",setup:f,render:f}
+                */
+                h(Foo, { count: 112})//第二步
             ]
         );
         return vnode;

@@ -32,7 +32,7 @@ export function createRender(options) {
     } = options;
 
     //0x000000
-    function render(vnode, container) {  
+    function render(vnode, container) {  // container 就是根容器
         // patch 
         patch(null, vnode, container, null, null)
     }
@@ -70,6 +70,7 @@ export function createRender(options) {
     function mountComponent(initialVNode: any, container: any, parentComponent: any, anchor) {
 
         //1.创建instance
+        debugger// emit 赋值时候，父组件，子组件判断。
         const instance = (initialVNode.component = createComponentInstance(initialVNode, parentComponent))
         //2.更新组件 有3个方法调用
         setupComponent(instance);
@@ -84,7 +85,7 @@ export function createRender(options) {
                 // debugger
                 const subTree = (instance.subTree = instance.render.call(proxy, proxy));// instance.render 就是App.js 中render 函数。
                 patch(null, subTree, container, instance, anchor);
-                // debugger
+                //  initialVNode 这个是rootContainer 创建的节点。
                 initialVNode.el = subTree.el// 2024-03-28  <23-实现组件代理对象，需要再加深>
                 instance.isMounted = true;
             } else {
@@ -127,6 +128,7 @@ export function createRender(options) {
         if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
             el.textContent = children;
         } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {  // array_children 
+            //TODO zlj-zlj-zlj--  这个地方是加载array_children
             mountChildren(vnode.children, el, parentComponent, anchor) // container 应该是el
         }
         // props 
@@ -141,7 +143,7 @@ export function createRender(options) {
 
     //0x000007
     function mountChildren(children, container, parentComponent: any, anchor) {
-        children.forEach((v) => {
+        children.forEach((v) => { 
             patch(null, v, container, parentComponent, anchor)
         })
     }

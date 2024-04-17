@@ -1,13 +1,11 @@
 import { isReadonly, shallowReadonly } from "../reactive"
 
 describe("shallowReadonly", () => { // 表层的
-
     test("should not mak non-reactive properties reactive", () => {
         const props = shallowReadonly({ n: { foo: 1 } });
         expect(isReadonly(props)).toBe(true);
         expect(isReadonly(props.n)).toBe(false);
     });
-
     it('should call console.warn when set', () => {
         console.warn = jest.fn()
         const user = shallowReadonly({

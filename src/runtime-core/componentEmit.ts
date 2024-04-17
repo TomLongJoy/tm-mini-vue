@@ -6,5 +6,6 @@ export function  emit(instance, event, ...args) {
     // add-foo -> addFoo 
     const handlerName = toHandlerKey(camelize(event));
     const handler = props[handlerName];
+    debugger
     handler && handler(...args);
 } 
