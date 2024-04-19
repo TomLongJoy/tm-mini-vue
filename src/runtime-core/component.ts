@@ -41,7 +41,7 @@ function setupStatefulComponent(instance: any) {
     if (setup) {
         setCurrentInstance(instance);
         const propsTem = shallowReadonly(instance.props);// 在initProps 处理。
-        debugger// setup返回值
+        // debugger// setup返回值
         const setupResult = setup(propsTem, { emit: instance.emit });
         setCurrentInstance(null);
         handleSetupResult(instance, setupResult);
@@ -63,7 +63,7 @@ function finishComponentSetup(instance: any) {
     instance.render = Component.render;
 }
 let currentInstance = null;
-export function getCurrentInstance() {
+export function getCurrentInstance() {// 只有在setup才能获取到。
     return currentInstance;
 }
 export function setCurrentInstance(instance) {

@@ -4,8 +4,7 @@ export function renderSlots(slots, name, props) {
     if (slot) {
         // function
         if (typeof slot === "function") {
-            // children 是不可以有array 
-            // 只需要把 chirldern 
+           //slot(props), 是个函数
             return createVNode(Fragment, {}, slot(props))
         }
     }

@@ -10,6 +10,7 @@ export const App = {
     },
 
     setup() {
+        debugger
         const instance = getCurrentInstance();
         console.log("App:", instance);
     }

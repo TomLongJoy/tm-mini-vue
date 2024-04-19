@@ -1,4 +1,6 @@
 ```js 
+https://juejin.cn/column/7100095488849870878
+
 
 Arguments to prepend to arguments provided to the bound function<绑定函数> when invoking func <当调用方法>.
 

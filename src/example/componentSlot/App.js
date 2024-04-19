@@ -6,8 +6,7 @@ import { Foo } from "./Foo.js";
 export const App = {
     name: "App",
     render() {
-        const app = h("div", {}, "App");
-
+        const app = h("div", {}, "App"); 
         const foo = h(
             Foo,
             {},

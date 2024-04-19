@@ -20,8 +20,7 @@ export function createVNode(type, props?, children?) {
         el: null, // $el 
     }
     if (typeof children === 'string') {// 0101  0110
-        vnode.shapeFlag |= ShapeFlags.TEXT_CHILDREN;
-       
+        vnode.shapeFlag |= ShapeFlags.TEXT_CHILDREN;       
     } else if (Array.isArray(children)) {
         vnode.shapeFlag |= ShapeFlags.ARRAY_CHILDREN;
     }

@@ -1,6 +1,6 @@
 import { hasOwn } from "../shared/index";
 
-
+// this.xxx 的时候会调用这里 get 方法。
 const publicPropertiesMap = {// i 对应 instance 
     $el: (i) => i.vnode.el,
     $slots: (i) => i.slots,
@@ -19,7 +19,7 @@ export const PublicInstancePoxyHandlers = {
         } else if (hasOwn(props, key)) {// Foo.js 中 render this.count触发
             return props[key];
         }
-        const publicGetter = publicPropertiesMap[key];
+        const publicGetter = publicPropertiesMap[key];// 需要调用publicGetter()方法才能拿到值。
         if (publicGetter) {
             return publicGetter(instance);
         }

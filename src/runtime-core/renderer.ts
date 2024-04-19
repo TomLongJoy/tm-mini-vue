@@ -70,7 +70,7 @@ export function createRender(options) {
     function mountComponent(initialVNode: any, container: any, parentComponent: any, anchor) {
 
         //1.创建instance
-        debugger// emit 赋值时候，父组件，子组件判断。
+        // debugger// emit 赋值时候，父组件，子组件判断。
         const instance = (initialVNode.component = createComponentInstance(initialVNode, parentComponent))
         //2.更新组件 有3个方法调用
         setupComponent(instance);
