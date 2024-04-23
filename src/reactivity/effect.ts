@@ -36,6 +36,17 @@ export class ReactiveEffect {
         }
     }
 }
+// 创建effect,执行run()方法，runner.effect绑定。
+export function effect(fn: any, options: any = {}) {
+
+    const _effect = new ReactiveEffect(fn, options.scheduler);
+    extend(_effect, options) // export const extend = Object.assign;
+    _effect.run();// run中的this就是 _effect
+    const runner: any = _effect.run.bind(_effect);
+    runner.effect = _effect; // 这里忘记写，报错了。 
+    return runner;//bind -- learn 2 
+}
+
 
 function cleanupEffect(effect: any) {
     effect.deps.forEach((dep: any) => {
@@ -45,7 +56,9 @@ function cleanupEffect(effect: any) {
 }
 
 //todo -- 收集依赖 06视频 14:30
-const targetMap = new Map();
+// const targetMap = new Map();
+const targetMap = new WeakMap();
+
 export function track(target: any, key: any) {    
     if(!activeEffect){
         debugger
@@ -70,7 +83,29 @@ export function trackEffects(dep) {
     //看看 dep 之前有没有添加过，添加过的话 那么就不添加了
     if (dep.has(activeEffect)) return;
     dep.add(activeEffect)
-    activeEffect.deps.push(dep); // 反向搜集   
+    activeEffect.deps.push(dep); // 反向搜集  
+    
+    // start --- test 
+    // let count = 0;
+    // if( activeEffect.deps.length ){
+    //     debugger
+    //     testMethod(activeEffect);
+    // }
+    // function testMethod(activeEffect){
+    //     const dep = activeEffect.deps[0]
+    //     for (const effect of dep) {            // debugger
+    //         count++;
+    //         if(count > 1000){
+    //             debugger
+    //             console.log('循环结束')
+    //             return;
+    //         }
+    //         testMethod(effect);
+            
+    //     }
+    // }
+    // end -- test 
+    
 }
 
 export function isTracking() { // 12集，10：45创建。  zlj 16集，10：12 有使用
@@ -96,15 +131,6 @@ export function triggerEffects(dep) {
     }
 }
 
-// 创建effect,执行run()方法，runner.effect绑定。
-export function effect(fn: any, options: any = {}) {
-    const _effect = new ReactiveEffect(fn, options.scheduler);
-    extend(_effect, options) // export const extend = Object.assign;
-    _effect.run();// run中的this就是 _effect
-    const runner: any = _effect.run.bind(_effect);
-    runner.effect = _effect; // 这里忘记写，报错了。 
-    return runner;//bind -- learn 2 
-}
 export function stop(runner: any) {
     runner.effect.stop();
 }

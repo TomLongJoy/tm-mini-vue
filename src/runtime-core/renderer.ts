@@ -78,6 +78,7 @@ export function createRender(options) {
     }
     // 0x000004
     function setupRenderEffect(instance: any, initialVNode, container: any, anchor) { 
+        // debugger
         instance.update = effect(() => {
             if (!instance.isMounted) {
                 const { proxy } = instance;
@@ -135,6 +136,7 @@ export function createRender(options) {
         const { props } = vnode;
         for (const key in props) {
             const val = props[key];
+            // null -- 初始化没有之前的值
             hostPatchProp(el, key, null, val); // runtime-dom\index.ts  -patchProp()
         }
         // container.append(el)
@@ -191,22 +193,21 @@ export function createRender(options) {
         const c1 = n1.children;
         const c2 = n2.children;
         if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
-            if (prevShapeFlag & ShapeFlags.ARRAY_CHILDREN) {
+            if (prevShapeFlag & ShapeFlags.ARRAY_CHILDREN) {// 1.array -> text
                 //1.把老的children清空
                 unmountChildren(n1.children);
                 //2. 设置 text   
                 // hostSetElementText(container, c2)
             }
-            if (c1 !== c2) {
+            if (c1 !== c2) {// 2.text -> text 、array -> text
                 hostSetElementText(container, c2)
             }
         } else {
             //new array 
-            if (prevShapeFlag & ShapeFlags.TEXT_CHILDREN) {
+            if (prevShapeFlag & ShapeFlags.TEXT_CHILDREN) {//3. text -> array 
                 hostSetElementText(container, "");
                 mountChildren(c2, container, parentComponent, anchor)
-
-            } else {
+            } else {// 4 . array -> array
                 patchKeyedChildren(c1, c2, container, parentComponent, anchor);
             }
         }

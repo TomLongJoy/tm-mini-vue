@@ -49,7 +49,7 @@ function setupStatefulComponent(instance: any) {
 }
 function handleSetupResult(instance, setupResult: any) {
     if (typeof setupResult === "object") {
-        instance.setupState = proxyRefs(setupResult);
+        instance.setupState = proxyRefs(setupResult);// 为了返回值，需要使用proxyRefs。
     }
     finishComponentSetup(instance)
 }

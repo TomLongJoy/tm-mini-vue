@@ -18,7 +18,6 @@ describe("happy path ", () => {
 
     it("should return runner when call effect", () => {
         //1. effect(fn) -> function ( runner ) -> fn -> return;
-
         let foo = 10;
         const runner = effect(() => {
             foo++;
