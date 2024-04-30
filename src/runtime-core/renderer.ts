@@ -220,7 +220,7 @@ export function createRender(options) {
         let i = 0;
         let e1 = c1.length - 1;//老
         let e2 = l2 - 1;//新
-        function isSomeVNodeType(n1, n2) {
+        function isSomeVNodeType(n1, n2) {// 检测节点是否一样
             //type  //key 
             return n1.type === n2.type && n1.key === n2.key;
         }
@@ -258,7 +258,8 @@ export function createRender(options) {
                     i++;
                 }
             }
-        } else if (i >= e2) {
+        } 
+        else if (i >= e2) {
             while (i <= e1) {
                 hostRemove(c1[i].el);
                 i++;
@@ -274,7 +275,7 @@ export function createRender(options) {
             const newIndexToOldIndexMap = new Array(tobePatched);
             let moved = false;
             let maxNewIndexSoFar = 0;
-            newIndexToOldIndexMap[i] = 0;
+            // newIndexToOldIndexMap[i] = 0;
             for (let i = 0; i < tobePatched; i++) {
                 newIndexToOldIndexMap[i] = 0;
             }

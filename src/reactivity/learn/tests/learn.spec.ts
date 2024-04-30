@@ -5,10 +5,10 @@ describe("reactive", () => {
     it.only('test proxy 1', () => {
 
         const setupState = {
-            msg:"hi,mini-vue"
+            msg: "hi,mini-vue"
         }
-        const proxy = new Proxy(setupState, { 
-            get(target,key){
+        const proxy = new Proxy(setupState, {
+            get(target, key) {
                 debugger
             }
         })
@@ -18,13 +18,13 @@ describe("reactive", () => {
     })
 
     it.only('test proxy 2 ', () => {
-        const setupState:any = {  }
-        const proxy = new Proxy(setupState, { 
-            get(target,key){
+        const setupState: any = {}
+        const proxy = new Proxy(setupState, {
+            get(target, key) {
                 debugger
             }
         })
-                    const msg = proxy.msg;
+        const msg = proxy.msg;
         console.log(msg);
         expect(msg).toBe("hi,mini-vue")
     })
@@ -54,4 +54,10 @@ describe("reactive", () => {
         mySet.add(2);
         debugger
     })
+ 
+
+
+
+
+
 })
